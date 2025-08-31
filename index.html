@@ -1,12 +1,15 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>روابطي - الداهوم</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
         :root {
@@ -83,8 +86,15 @@
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
         }
 
         .profile-image::before {
@@ -319,6 +329,7 @@
             border-radius: 12px;
             backdrop-filter: blur(10px);
         }
+
         .beta {
             color: var(--beta-red);
             font-weight: 700;
@@ -330,6 +341,7 @@
                 opacity: 0;
                 transform: translateY(-30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -341,6 +353,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -348,14 +361,37 @@
         }
 
         /* Stagger animation for cards */
-        .link-card:nth-child(1) { animation-delay: 0.1s; }
-        .link-card:nth-child(2) { animation-delay: 0.2s; }
-        .link-card:nth-child(3) { animation-delay: 0.3s; }
-        .link-card:nth-child(4) { animation-delay: 0.4s; }
-        .link-card:nth-child(5) { animation-delay: 0.5s; }
-        .link-card:nth-child(6) { animation-delay: 0.6s; }
-        .link-card:nth-child(7) { animation-delay: 0.7s; }
-        .link-card:nth-child(8) { animation-delay: 0.8s; }
+        .link-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .link-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .link-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .link-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .link-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .link-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .link-card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .link-card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
@@ -399,6 +435,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
         <!-- Header Section -->
@@ -408,9 +445,10 @@
                 <h1 class="profile-name">الداهوم</h1>
                 <div class="profile-title">مبرمج واجهات خلفية</div>
                 <p class="profile-bio">
-                   انا سامي مهندس برمجيات و مطور أنظمة خلفية متخصص في التقنيات الحديثة. أجمع بين الخبرة التقنية والثقافة السعودية لخلق حلول رقمية مبتكرة.
+                    انا سامي مهندس برمجيات و مطور أنظمة خلفية متخصص في التقنيات الحديثة. أجمع بين الخبرة التقنية
+                    والثقافة السعودية لخلق حلول رقمية مبتكرة.
                 </p>
-                  <p class="profile-bio beta">جميع الأزرار والروبط الملونة باللون الأحمر في هي أزرار قيد التطوير</p>
+                <p class="profile-bio beta">جميع الأزرار والروبط الملونة باللون الأحمر في هي أزرار قيد التطوير</p>
             </div>
         </div>
 
@@ -431,12 +469,12 @@
                     </div>
                 </a>
 
-                <a href="#" class="link-card">
+                <a href="Exhibition.html" class="link-card">
                     <div class="link-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
                     <div class="link-content">
-                        <div class="link-title beta">معرض الأعمال</div>
+                        <div class="link-title">معرض الأعمال</div>
                         <div class="link-description">مشاريعي وأعمالي التقنية</div>
                     </div>
                     <div class="link-arrow">
@@ -495,6 +533,18 @@
         <div class="category">
             <h2 class="category-title">التواصل</h2>
             <div class="links-grid">
+                <a href="Contact.html" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">صفحة التواصل</div>
+                        <div class="link-description">صفحة التواصل</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
                 <a href="mailto:progsami@proton.me" class="link-card">
                     <div class="link-icon">
                         <i class="fas fa-envelope"></i>
@@ -523,12 +573,15 @@
                 <a href="http://discord.com/users/708070985412247644" class="social-link" title="ديسكورد">
                     <i class="fab fa-discord"></i>
                 </a>
+                <a href="https://x.com/hi_vx3" class="social-link" title="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
             </div>
         </div>
 
         <!-- Footer -->
         <div class="footer">
-            { "created_with": "❤️", "location": "🇸🇦 السعودية", "year": "2025" }
+            {"location": "🇸🇦", "year": "2025" }
         </div>
     </div>
 
@@ -536,7 +589,7 @@
         // Smooth entrance animations
         document.addEventListener('DOMContentLoaded', () => {
             const cards = document.querySelectorAll('.link-card');
-            
+
             // Intersection Observer for cards
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach((entry, index) => {
@@ -562,7 +615,7 @@
             card.addEventListener('click', (e) => {
                 const linkTitle = card.querySelector('.link-title').textContent;
                 console.log(`تم النقر على: ${linkTitle}`);
-                
+
                 // Add click effect
                 card.style.transform = 'scale(0.95)';
                 setTimeout(() => {
@@ -574,11 +627,11 @@
         // Easter egg - typing effect on bio
         const bio = document.querySelector('.profile-bio');
         const originalText = bio.textContent;
-        
+
         function typeWriter(text, element, speed = 50) {
             element.textContent = '';
             let i = 0;
-            
+
             function type() {
                 if (i < text.length) {
                     element.textContent += text.charAt(i);
@@ -608,7 +661,7 @@
         function createParticle() {
             const colors = ['var(--najdi-green)', 'var(--najdi-gold)', 'var(--light-green)'];
             const particle = document.createElement('div');
-            
+
             particle.style.cssText = `
                 position: fixed;
                 width: 6px;
@@ -622,9 +675,9 @@
                 top: ${window.innerHeight + 10}px;
                 animation: floatUp 8s linear infinite;
             `;
-            
+
             document.body.appendChild(particle);
-            
+
             setTimeout(() => {
                 particle.remove();
             }, 8000);
@@ -650,4 +703,5 @@
         setInterval(createParticle, 4000);
     </script>
 </body>
+
 </html>
