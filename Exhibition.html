@@ -52,7 +52,7 @@
         a {
             -webkit-tap-highlight-color: transparent;
         }
-        
+
         button {
             -webkit-tap-highlight-color: transparent;
         }
@@ -142,7 +142,11 @@
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 32px;
             margin-bottom: 80px;
+
+            min-height: 310px;
+            position: relative;
         }
+
 
         .project-card {
             background: rgba(255, 255, 255, 0.95);
@@ -275,7 +279,7 @@
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: clamp(12px, 3vw, 14px);
             color: #666;
             font-weight: 600;
         }
@@ -358,12 +362,14 @@
         }
 
         .stat-value {
-            font-size: 36px;
+            font-size: clamp(24px, 6vw, 36px);
             font-weight: 700;
             color: var(--najdi-green);
             display: block;
             margin-bottom: 8px;
             font-family: 'JetBrains Mono', monospace;
+
+
         }
 
         .stat-description {
@@ -644,8 +650,9 @@
             }
 
             .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 24px;
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+                gap: 20px;
             }
 
             .skills-grid {
@@ -660,51 +667,39 @@
             .project-stats {
                 grid-template-columns: repeat(2, 1fr);
             }
+
+            .hide-mobile {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .stats-section {
+                padding: 30px 16px;
+                margin: 40px 8px;
+            }
         }
 
         /* Filter Animation */
         .project-card.filtered-out {
+            display: none;
             opacity: 0;
-            transform: scale(0.8);
-            pointer-events: none;
+            transform: scale(0.9);
+            transition: all 0.3s ease;
         }
 
         .project-card.filtered-in {
+            display: block;
             opacity: 1;
             transform: scale(1);
-            pointer-events: all;
+            transition: all 0.3s ease;
         }
     </style>
 </head>
 
 <body>
-    <div class="modal" id="underConstructionModal">
-        <div class="modal-content">
-            <h3>🚧 الموقع تحت الإنشاء</h3>
-            <p>هذا المشروع ما زال في مرحلة التطوير.</p>
-            <button onclick="closeModal()">إغلاق</button>
-        </div>
-    </div>
-    <div class="modal" id="ctaModal">
-        <div class="modal-content">
-            <h3>🚧 الخدمة تحت الإنشاء</h3>
-            <p>ميزة بدء المشروع غير مفعلة حالياً.</p>
-            <button onclick="closeCtaModal()">إغلاق</button>
-        </div>
-    </div>
-    <div class="modal" id="filterModal">
-        <div class="modal-content">
-            <h3>🚧 الفلترة غير مفعلة</h3>
-            <p>هذه الخاصية تحت الإنشاء حالياً.</p>
-            <button onclick="closeFilterModal()">إغلاق</button>
-        </div>
-    </div>
-
-
-
 
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>معرض الأعمال</h1>
             <p>
@@ -713,7 +708,6 @@
             </p>
         </div>
 
-        <!-- Filter Tabs -->
         <div class="filter-tabs">
             <button class="filter-tab active" data-filter="all">
                 <i class="fas fa-th"></i>
@@ -742,8 +736,18 @@
             </button>
         </div>
 
-        <!-- Projects Grid -->
         <div class="projects-grid" id="projectsGrid">
+            <div class="no-projects-message"
+                style="display:none; text-align:center; padding:60px 20px; font-size:20px; color:#555; font-weight:500; opacity:0; transition: opacity 0.4s;">
+                <div style="font-size:60px; margin-bottom:20px; color:var(--najdi-green);">
+                    <i class="fas fa-folder-open"></i>
+                </div>
+                لا توجد مشاريع في هذا التصنيف
+                <div style="margin-top:10px; font-size:16px; color:#888;">
+                    حاول اختيار تصنيف آخر أو ابحث عن مشروع
+                </div>
+            </div>
+
 
             <div class="project-card" data-category="desktop">
                 <div class="project-image">
@@ -767,14 +771,10 @@
                         يتضمن خوارزميات الذكاء الاصطناعي لكشف الأنماط المشبوهة والتصدي للهجمات.
                     </p>
                     <div class="project-tech">
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
+                        <span class="tech-tag">المشروع تحت الدراسة</span>
                     </div>
                     <div class="project-stats">
-                        <div class="stat-item">
+                        <div class="stat-item hide-mobile">
                             <span class="stat-number">0+</span>
                             <span class="stat-label">جهاز محمي</span>
                         </div>
@@ -788,11 +788,12 @@
                         </div>
                     </div>
                     <div class="project-actions">
-                        <a href="https://hi-vx3.github.io/S.I.F.E.R-Web/soon.html" class="project-btn btn-primary">
+                        <a href="#" class="project-btn btn-primary"
+                            data-url="https://hi-vx3.github.io/S.I.F.E.R-Web/soon.html">
                             <i class="fas fa-shield-alt"></i>
                             عرض النظام
                         </a>
-                        <a href="https://github.com/hi-vx3/S.I.F.E.R" class="project-btn btn-secondary">
+                        <a href="#" class="project-btn btn-secondary" data-url="https://github.com/hi-vx3/S.I.F.E.R">
                             <i class="fab fa-github"></i>
                             الكود المصدري
                         </a>
@@ -813,22 +814,19 @@
                 <div class="project-content">
                     <div class="project-header">
                         <div>
-                            <h3 class="project-title">اداة اختراق سلاسل الهجوم</h3>
+                            <h3 class="project-title">أداة سلاسل الهجوم</h3>
                             <div class="project-type">الأدوات</div>
                         </div>
                     </div>
                     <p class="project-description">
                         إطار عمل متقدم لمحاكاة الهجمات الإلكترونية المتسلسلة، يعتمد على تقنيات الحقن، السكريبتات الخفية،
                         وقنوات الاتصال الشبكية.
+                    </p>
                     <div class="project-tech">
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
-                        <span class="tech-tag">&</span>
+                        <span class="tech-tag">المشروع تحت الدراسة</span>
                     </div>
                     <div class="project-stats">
-                        <div class="stat-item">
+                        <div class="stat-item hide-mobile">
                             <span class="stat-number">0%</span>
                             <span class="stat-label">طلب يومي</span>
                         </div>
@@ -846,7 +844,8 @@
                             <i class="fas fa-eye"></i>
                             عرض الاداة
                         </a>
-                        <a href="https://github.com/hi-vx3/Shadowsting-V2" class="project-btn btn-secondary">
+                        <a href="#" class="project-btn btn-secondary"
+                            data-url="https://github.com/hi-vx3/Shadowsting-V2">
                             <i class="fab fa-github"></i>
                             الكود المصدري
                         </a>
@@ -855,7 +854,6 @@
             </div>
         </div>
 
-        <!-- Stats Section -->
         <div class="stats-section">
             <h2 class="stats-title">إحصائيات الأعمال</h2>
             <div class="stats-grid">
@@ -863,21 +861,21 @@
                     <div class="stat-icon">
                         <i class="fas fa-project-diagram"></i>
                     </div>
-                    <span class="stat-value" data-target="50">0</span>
+                    <span class="stat-value" data-target="0">0</span>
                     <div class="stat-description">مشروع مكتمل</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-users"></i>
                     </div>
-                    <span class="stat-value" data-target="150000">0</span>
+                    <span class="stat-value" data-target="1">0</span>
                     <div class="stat-description">مستخدم نشط</div>
                 </div>
                 <div class="stat-card">
                     <div class="stat-icon">
                         <i class="fas fa-code"></i>
                     </div>
-                    <span class="stat-value" data-target="500000">0</span>
+                    <span class="stat-value" data-target="500000" data-plus="true">0</span>
                     <div class="stat-description">سطر برمجي</div>
                 </div>
                 <div class="stat-card">
@@ -890,7 +888,6 @@
             </div>
         </div>
 
-        <!-- Skills Section -->
         <div class="skills-section">
             <h2 class="skills-title">التقنيات والمهارات</h2>
             <div class="skills-grid">
@@ -900,8 +897,14 @@
                     </div>
                     <h3 class="skill-category-title">Backend Development</h3>
                     <div class="skill-items">
-                        <span class="skill-item">&</span>
-
+                        <span class="skill-item">JavaScript</span>
+                        <span class="skill-item">Python</span>
+                        <span class="skill-item">PHP</span>
+                        <span class="skill-item">Go</span>
+                        <span class="skill-item">Java</span>
+                        <span class="skill-item">.NET</span>
+                        <span class="skill-item">Node.js</span>
+                        <span class="skill-item">Rust</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -910,8 +913,10 @@
                     </div>
                     <h3 class="skill-category-title">قواعد البيانات</h3>
                     <div class="skill-items">
-                        <span class="skill-item">&</span>
-
+                        <span class="skill-item">MySQL</span>
+                        <span class="skill-item">SQLite</span>
+                        <span class="skill-item">MongoDB</span>
+                        <span class="skill-item">Redis</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -920,8 +925,12 @@
                     </div>
                     <h3 class="skill-category-title">الحوسبة السحابية</h3>
                     <div class="skill-items">
-                        <span class="skill-item">&</span>
-
+                        <span class="skill-item">AWS</span>
+                        <span class="skill-item">Azure</span>
+                        <span class="skill-item">Google Cloud</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">Kubernetes</span>
+                        <span class="skill-item">Terraform</span>
                     </div>
                 </div>
                 <div class="skill-category">
@@ -930,14 +939,22 @@
                     </div>
                     <h3 class="skill-category-title">الأدوات والأطر</h3>
                     <div class="skill-items">
-                        <span class="skill-item">&</span>
-
+                        <span class="skill-item">Express.js</span>
+                        <span class="skill-item">Django</span>
+                        <span class="skill-item">Laravel</span>
+                        <span class="skill-item">FastAPI</span>
+                        <span class="skill-item">Git</span>
+                        <span class="skill-item">Postman</span>
+                        <span class="skill-item">Terraform</span>
+                        <span class="skill-item">CI/CD Tools</span>
+                        <span class="skill-item">Docker</span>
+                        <span class="skill-item">Prisma</span>
+                        <span class="skill-item">Sequelize</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- CTA Section -->
         <div class="cta-section">
             <div class="cta-content">
                 <h2 class="cta-title">لديك مشروع في ذهنك؟</h2>
@@ -953,50 +970,364 @@
     </div>
 
 </body>
+
+
+
+
 <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const filterTabs = document.querySelectorAll('.filter-tab');
+        const projectCards = document.querySelectorAll('.project-card');
 
-    function openCtaModal() {
-        document.getElementById("ctaModal").style.display = "flex";
-    }
-    function closeCtaModal() {
-        document.getElementById("ctaModal").style.display = "none";
-    }
-    function openModal() {
-        document.getElementById("underConstructionModal").style.display = "flex";
-    }
-    function closeModal() {
-        document.getElementById("underConstructionModal").style.display = "none";
-    }
-    function openFilterModal() {
-        document.getElementById("filterModal").style.display = "flex";
-    }
-    function closeFilterModal() {
-        document.getElementById("filterModal").style.display = "none";
+        filterTabs.forEach(tab => {
+            tab.addEventListener('click', function () {
+                const filter = this.getAttribute('data-filter');
+                filterTabs.forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                filterProjects(filter);
+            });
+        });
+
+        function filterProjects(filter) {
+            const projectCards = Array.from(document.querySelectorAll('.project-card'));
+            const filteredCards = projectCards.filter(card => {
+                const category = card.getAttribute('data-category');
+                return filter === 'all' || category === filter;
+            });
+
+            const noProjectsMessage = document.querySelector('.no-projects-message');
+            noProjectsMessage.style.transition = 'opacity 0.4s ease';
+            noProjectsMessage.style.opacity = '0';
+            noProjectsMessage.style.display = 'none';
+
+            projectCards.forEach(card => {
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                if (filteredCards.includes(card)) {
+                    card.style.display = 'block';
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
+                    }, 50);
+                } else {
+                    card.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        card.style.display = 'none';
+                    }, 500);
+                }
+            });
+
+            if (filteredCards.length === 0) {
+                setTimeout(() => {
+                    noProjectsMessage.style.display = 'block';
+                    setTimeout(() => {
+                        noProjectsMessage.style.opacity = '1';
+                    }, 50);
+                }, 500);
+            }
+        }
+
+        setTimeout(() => {
+            projectCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 150);
+            });
+        }, 300);
+    });
+
+    function animateCounter(element, target, duration = 2000) {
+        const start = 0;
+        const increment = target / (duration / 16);
+        let current = start;
+
+        const updateCounter = () => {
+            current += increment;
+            if (current < target) {
+                if (target >= 1000) {
+                    element.textContent = Math.floor(current).toLocaleString();
+                } else {
+                    element.textContent = Math.floor(current);
+                }
+                requestAnimationFrame(updateCounter);
+            } else {
+                // لو فيه data-plus=true ضيف علامة +
+                const showPlus = element.getAttribute("data-plus") === "true";
+                if (target >= 1000) {
+                    element.textContent = target.toLocaleString() + (showPlus ? "+" : "");
+                } else {
+                    element.textContent = target + (showPlus ? "+" : "");
+                }
+            }
+        };
+
+        updateCounter();
     }
 
+    const observerOptions = {
+        threshold: 0.2,
+        rootMargin: '0px 0px -50px 0px'
+    };
 
-    document.querySelectorAll('.show-project-modal').forEach(btn => {
-        btn.addEventListener('click', function (e) {
-            e.preventDefault();
-            openModal();
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.target.classList.contains('stats-section')) {
+                    const statValues = entry.target.querySelectorAll('.stat-value');
+                    statValues.forEach(stat => {
+                        if (!stat.dataset.animated) {
+                            const target = parseInt(stat.getAttribute('data-target'));
+                            animateCounter(stat, target);
+                            stat.dataset.animated = 'true'; // علم على أنه تم تشغيله
+                        }
+                    });
+                }
+
+                if (entry.target.classList.contains('skill-category')) {
+                    const skillItems = entry.target.querySelectorAll('.skill-item');
+                    skillItems.forEach((item, index) => {
+                        setTimeout(() => {
+                            item.style.opacity = '1';
+                            item.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    });
+                }
+
+                entry.target.classList.add('animate-fade-in');
+            }
+        });
+    }, observerOptions);
+    document.addEventListener('DOMContentLoaded', () => {
+        const animatedElements = document.querySelectorAll('.stats-section, .skill-category, .cta-section');
+        animatedElements.forEach(element => {
+            observer.observe(element);
+        });
+
+        const skillItems = document.querySelectorAll('.skill-item');
+        skillItems.forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.3s ease';
         });
     });
 
-    document.querySelector('.cta-button').addEventListener('click', function (e) {
+    document.querySelectorAll('.project-card').forEach(card => {
+        const techTags = card.querySelectorAll('.tech-tag');
+        techTags.forEach(tag => {
+            tag.addEventListener('mouseenter', function () {
+                this.style.transform = 'scale(1.1)';
+                this.style.background = 'var(--najdi-green)';
+                this.style.color = 'var(--white)';
+            });
+            tag.addEventListener('mouseleave', function () {
+                this.style.transform = 'scale(1)';
+                this.style.background = 'rgba(0, 108, 53, 0.1)';
+                this.style.color = 'var(--najdi-green)';
+            });
+        });
+
+        const projectBtns = card.querySelectorAll('.project-btn');
+        projectBtns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                e.preventDefault();
+                const projectTitle = card.querySelector('.project-title').textContent;
+                const targetUrl = this.getAttribute('data-url');
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => { this.style.transform = ''; }, 150);
+                if (targetUrl) {
+                    window.location.href = targetUrl;
+                } else {
+                    showNotification(`صفحة ${projectTitle} قيد التطوير...`);
+                }
+            });
+        });
+    });
+
+    function showNotification(message) {
+        const existingNotification = document.querySelector('.notification');
+        if (existingNotification) existingNotification.remove();
+
+        const notification = document.createElement('div');
+        notification.className = 'notification';
+        notification.textContent = message;
+        notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--najdi-green);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 108, 53, 0.3);
+        z-index: 9999;
+        font-weight: 600;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+    `;
+        document.body.appendChild(notification);
+        setTimeout(() => { notification.style.transform = 'translateX(0)'; }, 100);
+        setTimeout(() => {
+            notification.style.transform = 'translateX(100%)';
+            setTimeout(() => { notification.remove(); }, 300);
+        }, 3000);
+    }
+
+    function createSearchBox() {
+        const header = document.querySelector('.header');
+        const searchContainer = document.createElement('div');
+        searchContainer.className = 'search-container';
+        searchContainer.innerHTML = `
+        <input type="text" id="projectSearch" placeholder="ابحث في المشاريع..." style="
+            width: 100%;
+            max-width: 400px;
+            padding: 12px 20px;
+            border: 2px solid rgba(0, 108, 53, 0.1);
+            border-radius: 25px;
+            font-size: 16px;
+            margin-top: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        ">
+    `;
+        header.appendChild(searchContainer);
+
+        const searchInput = document.getElementById('projectSearch');
+        searchInput.addEventListener('focus', function () {
+            this.style.borderColor = 'var(--najdi-green)';
+            this.style.boxShadow = '0 0 20px rgba(0, 108, 53, 0.1)';
+        });
+        searchInput.addEventListener('blur', function () {
+            this.style.borderColor = 'rgba(0, 108, 53, 0.1)';
+            this.style.boxShadow = 'none';
+        });
+        searchInput.addEventListener('input', function () {
+            filterProjectsBySearch(this.value.toLowerCase());
+        });
+    }
+
+    function filterProjectsBySearch(searchTerm) {
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            const title = card.querySelector('.project-title').textContent.toLowerCase();
+            const description = card.querySelector('.project-description').textContent.toLowerCase();
+            const techTags = Array.from(card.querySelectorAll('.tech-tag')).map(tag => tag.textContent.toLowerCase());
+            const isMatch = title.includes(searchTerm) || description.includes(searchTerm) || techTags.some(tech => tech.includes(searchTerm));
+
+            if (searchTerm === '' || isMatch) {
+                card.style.display = 'block';
+                card.style.opacity = '1';
+                card.style.transform = 'scale(1)';
+            } else {
+                card.style.display = 'none';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.8)';
+            }
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { createSearchBox(); });
+
+    document.querySelector('.cta-button')?.addEventListener('click', function (e) {
         e.preventDefault();
-        openCtaModal();
+        const contactSection = document.querySelector('#contact') || document.querySelector('.contact-section');
+        if (contactSection) {
+            contactSection.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            showNotification('الصفحة في حالة تطوير');
+            setTimeout(() => { }, 1000);
+        }
     });
 
-    document.querySelectorAll('.filter-tab').forEach(tab => {
-        tab.addEventListener('click', function (e) {
-            e.preventDefault();
-            openFilterModal();
+    document.addEventListener('keydown', function (e) {
+        const activeTab = document.querySelector('.filter-tab.active');
+        const allTabs = Array.from(document.querySelectorAll('.filter-tab'));
+        const currentIndex = allTabs.indexOf(activeTab);
+        let newIndex = currentIndex;
+        if (e.key === 'ArrowRight' && currentIndex > 0) newIndex = currentIndex - 1;
+        else if (e.key === 'ArrowLeft' && currentIndex < allTabs.length - 1) newIndex = currentIndex + 1;
+        if (newIndex !== currentIndex) { e.preventDefault(); allTabs[newIndex].click(); allTabs[newIndex].focus(); }
+    });
+
+    document.querySelectorAll('.project-card').forEach((card, index) => {
+        card.setAttribute('tabindex', '0');
+        card.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                const primaryBtn = this.querySelector('.btn-primary');
+                if (primaryBtn) primaryBtn.click();
+            }
         });
+        card.addEventListener('focus', function () { this.style.transform = 'translateY(-8px)'; this.style.boxShadow = '0 20px 40px rgba(0, 108, 53, 0.2)'; });
+        card.addEventListener('blur', function () { this.style.transform = ''; this.style.boxShadow = ''; });
+
     });
 
-</script>
-<script>
+    console.log(`
+%c
+╔════════════════════════════════════════════╗
+║        🎨 معرض أعمال الداهوم                   
+║        👨‍💻 مشاريع تقنية متنوعة ومتقدمة          --------------    
+║        🚀 من الفكرة إلى التنفيذ               --------------  
+║       🇸🇦 صنع في المملكة العربية السعودية             
+╚════════════════════════════════════════════╝
+`, 'color: #006C35; font-family: monospace; font-size: 12px;');
 
+    const performanceObserver = new PerformanceObserver((list) => {
+        for (const entry of list.getEntries()) {
+            if (entry.entryType === 'navigation') console.log(`⚡ تم تحميل الصفحة في ${Math.round(entry.loadEventEnd - entry.loadEventStart)}ms`);
+        }
+    });
+    if ('PerformanceObserver' in window) performanceObserver.observe({ entryTypes: ['navigation'] });
+
+    let logoClickCount = 0;
+    const header = document.querySelector('.header h1');
+    header?.addEventListener('click', function () {
+        logoClickCount++;
+        if (logoClickCount >= 5) {
+            document.body.style.filter = 'hue-rotate(0deg)';
+            let hue = 0;
+            const rainbowInterval = setInterval(() => { hue = (hue + 10) % 360; document.body.style.filter = `hue-rotate(${hue}deg)`; }, 100);
+            setTimeout(() => { clearInterval(rainbowInterval); document.body.style.filter = 'none'; logoClickCount = 0; }, 3000);
+            showNotification('🌈 تم تفعيل وضع قوس قزح!');
+        }
+    });
+
+    function setupLazyLoading() {
+        const imageObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const img = entry.target;
+                    img.style.background = `linear-gradient(135deg, var(--najdi-green), var(--light-green))`;
+                    imageObserver.unobserve(img);
+                }
+            });
+        });
+        document.querySelectorAll('.project-image').forEach(img => { imageObserver.observe(img); });
+    }
+    document.addEventListener('DOMContentLoaded', setupLazyLoading);
+
+    let touchStartX = 0;
+    let touchStartY = 0;
+    document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; touchStartY = e.changedTouches[0].screenY; }, { passive: true });
+    document.addEventListener('touchend', e => {
+        const touchEndX = e.changedTouches[0].screenX;
+        const touchEndY = e.changedTouches[0].screenY;
+        const deltaX = touchStartX - touchEndX;
+        const deltaY = touchStartY - touchEndY;
+        if (Math.abs(deltaX) > 50 && Math.abs(deltaY) < 100) {
+            const activeTab = document.querySelector('.filter-tab.active');
+            const allTabs = Array.from(document.querySelectorAll('.filter-tab'));
+            const currentIndex = allTabs.indexOf(activeTab);
+            let newIndex = currentIndex;
+            if (deltaX > 0 && currentIndex < allTabs.length - 1) newIndex = currentIndex + 1;
+            else if (deltaX < 0 && currentIndex > 0) newIndex = currentIndex - 1;
+            if (newIndex !== currentIndex) { allTabs[newIndex].click(); showNotification(`تم التبديل إلى: ${allTabs[newIndex].textContent.trim()}`); }
+        }
+    });
 
 </script>
 
