@@ -1237,8 +1237,8 @@
         if (contactSection) {
             contactSection.scrollIntoView({ behavior: 'smooth' });
         } else {
-            showNotification('الصفحة في حالة تطوير');
-            setTimeout(() => { }, 1000);
+            window.location.href = "Launch.html";
+
         }
     });
 

@@ -1,0 +1,1413 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ابدأ مشروعك الآن - الداهوم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --najdi-green: #006C35;
+            --light-green: #4CAF50;
+            --najdi-beige: #E5D4B7;
+            --dark-black: #121212;
+            --white: #FFFFFF;
+            --najdi-gold: #CFAE70;
+            --success-green: #27ae60;
+            --error-red: #e74c3c;
+            --warning-orange: #f39c12;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-black);
+            background: linear-gradient(135deg, var(--najdi-beige) 0%, #f5f1e8 100%);
+            scroll-behavior: smooth;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006C35' fill-opacity='0.02'%3E%3Cpath d='M20 20l10-10v20l-10-10z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header */
+        .header {
+            padding: 80px 0;
+            text-align: center;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .main-title {
+            font-size: 48px;
+            font-weight: 700;
+            color: var(--najdi-green);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .main-title::after {
+            content: "{ }";
+            color: var(--najdi-gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        .header-visual {
+            background: rgba(18, 18, 18, 0.95);
+            border-radius: 16px;
+            padding: 32px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(207, 174, 112, 0.2);
+        }
+
+        .code-animation {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            text-align: left;
+            direction: ltr;
+        }
+
+        .code-line {
+            margin-bottom: 12px;
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: codeAppear 0.6s ease-out forwards;
+        }
+
+        .code-line:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .code-line:nth-child(2) {
+            animation-delay: 0.6s;
+        }
+
+        .code-line:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .comment {
+            color: #7C7C7C;
+        }
+
+        .keyword {
+            color: var(--light-green);
+        }
+
+        .variable {
+            color: #9CDCFE;
+        }
+
+        .string {
+            color: var(--najdi-gold);
+        }
+
+        .function {
+            color: #DCDCAA;
+        }
+
+        @keyframes codeAppear {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Sections */
+        .section {
+            margin: 80px 0;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .section-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--najdi-green);
+            text-align: center;
+            margin-bottom: 16px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--najdi-gold);
+        }
+
+        .section-description {
+            text-align: center;
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 48px;
+        }
+
+        /* Project Types Grid */
+        .project-types-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .project-type-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 32px;
+            text-align: center;
+            border: 2px solid rgba(0, 108, 53, 0.1);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .project-type-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(207, 174, 112, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .project-type-card:hover::before {
+            left: 100%;
+        }
+
+        .project-type-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.2);
+            border-color: var(--najdi-green);
+        }
+
+        .project-type-card.active {
+            border-color: var(--najdi-green);
+            background: rgba(0, 108, 53, 0.05);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.2);
+        }
+
+        .card-icon {
+            font-size: 48px;
+            color: var(--najdi-green);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .project-type-card:hover .card-icon {
+            color: var(--najdi-gold);
+            transform: scale(1.1);
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark-black);
+            margin-bottom: 12px;
+        }
+
+        .card-description {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        .card-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .feature-tag {
+            background: rgba(0, 108, 53, 0.1);
+            color: var(--najdi-green);
+            padding: 6px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid rgba(0, 108, 53, 0.2);
+        }
+
+        .card-price {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--najdi-gold);
+        }
+
+        .card-price .price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--najdi-green);
+        }
+
+        /* Project Form Section */
+        .project-form-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            border: 1px solid rgba(0, 108, 53, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.1);
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .project-form-section.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .selected-type-display {
+            margin-bottom: 32px;
+        }
+
+        .selected-type-card {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(0, 108, 53, 0.05);
+            border-radius: 12px;
+            border: 1px solid rgba(0, 108, 53, 0.2);
+        }
+
+        .selected-icon {
+            font-size: 32px;
+            color: var(--najdi-green);
+        }
+
+        .selected-info {
+            flex: 1;
+        }
+
+        .selected-info h3 {
+            font-size: 18px;
+            color: var(--dark-black);
+            margin-bottom: 4px;
+        }
+
+        .selected-info p {
+            color: var(--najdi-gold);
+            font-weight: 600;
+        }
+
+        .change-type-btn {
+            background: transparent;
+            border: 2px solid var(--najdi-green);
+            color: var(--najdi-green);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .change-type-btn:hover {
+            background: var(--najdi-green);
+            color: var(--white);
+        }
+
+        /* Form Steps */
+        .form-step {
+            display: none;
+        }
+
+        .form-step.active {
+            display: block;
+            animation: stepSlideIn 0.4s ease-out;
+        }
+
+        @keyframes stepSlideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .step-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--najdi-green);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        /* Form Elements */
+        .form-group {
+            margin-bottom: 24px;
+            position: relative;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--dark-black);
+            margin-bottom: 8px;
+        }
+
+        .form-input,
+        .form-textarea,
+        .form-select {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(0, 108, 53, 0.1);
+            border-radius: 12px;
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            resize: vertical;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: var(--najdi-green);
+            background: var(--white);
+            box-shadow: 0 0 20px rgba(0, 108, 53, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .form-input.error,
+        .form-textarea.error,
+        .form-select.error {
+            border-color: var(--error-red);
+        }
+
+        .form-textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        /* Checkbox Grid */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkbox-item:hover {
+            background: rgba(0, 108, 53, 0.05);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 108, 53, 0.3);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked+.checkmark {
+            background: var(--najdi-green);
+            border-color: var(--najdi-green);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked+.checkmark::after {
+            content: '✓';
+            color: var(--white);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Radio Group */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .radio-item:hover {
+            background: rgba(0, 108, 53, 0.05);
+        }
+
+        .radio-item input[type="radio"] {
+            display: none;
+        }
+
+        .radio-mark {
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(0, 108, 53, 0.3);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .radio-item input[type="radio"]:checked+.radio-mark {
+            border-color: var(--najdi-green);
+        }
+
+        .radio-item input[type="radio"]:checked+.radio-mark::after {
+            content: '';
+            width: 10px;
+            height: 10px;
+            background: var(--najdi-green);
+            border-radius: 50%;
+            position: absolute;
+        }
+
+        /* Form Navigation */
+        .form-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(0, 108, 53, 0.1);
+        }
+
+        .nav-btn {
+            background: linear-gradient(135deg, var(--najdi-green), var(--light-green));
+            color: var(--white);
+            border: none;
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 108, 53, 0.3);
+        }
+
+        .nav-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .nav-btn.prev-btn {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--najdi-green);
+            border: 2px solid var(--najdi-green);
+        }
+
+        .nav-btn.submit-btn {
+            background: linear-gradient(135deg, var(--najdi-gold), #d4af6a);
+            font-size: 18px;
+            padding: 18px 32px;
+        }
+
+        /* Step Indicator */
+        .step-indicator {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .step-dot {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 108, 53, 0.1);
+            color: var(--najdi-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .step-dot.active {
+            background: var(--najdi-green);
+            color: var(--white);
+        }
+
+        .step-dot.completed {
+            background: var(--success-green);
+            color: var(--white);
+        }
+
+        .step-dot.completed::before {
+            content: '✓';
+            font-size: 18px;
+        }
+
+        /* Success Section */
+        .success-section {
+            text-align: center;
+            padding: 80px 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            border: 1px solid rgba(0, 108, 53, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.1);
+        }
+
+        .success-icon {
+            font-size: 80px;
+            color: var(--success-green);
+            margin-bottom: 24px;
+            animation: successPulse 1s ease-out;
+        }
+
+        @keyframes successPulse {
+            0% {
+                transform: scale(0);
+            }
+
+            50% {
+                transform: scale(1.2);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .success-title {
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--najdi-green);
+            margin-bottom: 16px;
+        }
+
+        .success-message {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 32px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .success-btn {
+            padding: 16px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .success-btn.primary {
+            background: #25D366;
+            color: var(--white);
+        }
+
+        .success-btn.secondary {
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--najdi-green);
+            border: 2px solid var(--najdi-green);
+        }
+
+        .success-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Success Timeline */
+        .success-timeline {
+            text-align: right;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .success-timeline h3 {
+            font-size: 24px;
+            color: var(--najdi-green);
+            margin-bottom: 24px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            align-items: flex-start;
+        }
+
+        .timeline-number {
+            width: 32px;
+            height: 32px;
+            background: var(--najdi-green);
+            color: var(--white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            flex: 1;
+        }
+
+        .timeline-content strong {
+            color: var(--dark-black);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .timeline-content p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Benefits Grid */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 32px;
+        }
+
+        .benefit-card {
+            text-align: center;
+            padding: 32px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 108, 53, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.15);
+        }
+
+        .benefit-icon {
+            font-size: 48px;
+            color: var(--najdi-gold);
+            margin-bottom: 20px;
+        }
+
+        .benefit-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--dark-black);
+            margin-bottom: 12px;
+        }
+
+        .benefit-card p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        /* FAQ Section */
+        .faq-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid rgba(0, 108, 53, 0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-question {
+            padding: 20px 24px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: var(--dark-black);
+            transition: all 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: rgba(0, 108, 53, 0.05);
+        }
+
+        .faq-question i {
+            color: var(--najdi-green);
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 200px;
+        }
+
+        .faq-answer p {
+            padding: 0 24px 20px;
+            color: #666;
+            line-height: 1.7;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .main-title {
+                font-size: 36px;
+                justify-content: center;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .project-types-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .checkbox-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-navigation {
+                flex-direction: column;
+                gap: 16px;
+            }
+
+            .step-indicator {
+                order: -1;
+            }
+
+            .success-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .selected-type-card {
+                flex-direction: column;
+                text-align: center;
+                gap: 16px;
+            }
+
+            .timeline-item {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-section">
+                <h1 class="main-title">ابدأ مشروعك معي</h1>
+                <p class="subtitle">من الفكرة إلى التنفيذ - دعني أحول رؤيتك إلى واقع تقني</p>
+            </div>
+            <div class="header-visual">
+                <div class="code-animation">
+                    <div class="code-line">
+                        <span class="comment">// مشروعك الجديد</span>
+                    </div>
+                    <div class="code-line">
+                        <span class="keyword">const</span> <span class="variable">project</span> = <span
+                            class="string">"amazing"</span>;
+                    </div>
+                    <div class="code-line">
+                        <span class="function">startDevelopment</span>(<span class="variable">project</span>);
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Type Selection -->
+        <div class="section project-types">
+            <h2 class="section-title">ما نوع مشروعك؟</h2>
+            <p class="section-description">اختر نوع المشروع الذي تريد تطويره</p>
+
+            <div class="project-types-grid" id="projectTypesGrid">
+                <div class="project-type-card" data-type="web-app">
+                    <div class="card-icon">
+                        <i class="fas fa-globe"></i>
+                    </div>
+                    <h3 class="card-title">تطبيق ويب</h3>
+                    <p class="card-description">موقع إلكتروني أو تطبيق ويب تفاعلي</p>
+                    <div class="card-features">
+                        <span class="feature-tag">واجهة مستخدم</span>
+                        <span class="feature-tag">لوحة إدارة</span>
+                        <span class="feature-tag">قواعد بيانات</span>
+                    </div>
+                    <div class="card-price">من <span class="price">15,000</span> ريال</div>
+                </div>
+
+                <div class="project-type-card" data-type="mobile-app">
+                    <div class="card-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3 class="card-title">تطبيق جوال</h3>
+                    <p class="card-description">تطبيق iOS/Android أو تطبيق هجين</p>
+                    <div class="card-features">
+                        <span class="feature-tag">متعدد المنصات</span>
+                        <span class="feature-tag">إشعارات فورية</span>
+                        <span class="feature-tag">تكامل APIs</span>
+                    </div>
+                    <div class="card-price">من <span class="price">25,000</span> ريال</div>
+                </div>
+
+                <div class="project-type-card" data-type="api-system">
+                    <div class="card-icon">
+                        <i class="fas fa-plug"></i>
+                    </div>
+                    <h3 class="card-title">نظام APIs</h3>
+                    <p class="card-description">واجهات برمجية وأنظمة خلفية</p>
+                    <div class="card-features">
+                        <span class="feature-tag">RESTful APIs</span>
+                        <span class="feature-tag">GraphQL</span>
+                        <span class="feature-tag">قواعد البيانات</span>
+                    </div>
+                    <div class="card-price">من <span class="price">12,000</span> ريال</div>
+                </div>
+
+                <div class="project-type-card" data-type="ecommerce">
+                    <div class="card-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="card-title">متجر إلكتروني</h3>
+                    <p class="card-description">منصة تجارة إلكترونية متكاملة</p>
+                    <div class="card-features">
+                        <span class="feature-tag">نظام دفع</span>
+                        <span class="feature-tag">إدارة المخزون</span>
+                        <span class="feature-tag">تقارير مبيعات</span>
+                    </div>
+                    <div class="card-price">من <span class="price">20,000</span> ريال</div>
+                </div>
+
+                <div class="project-type-card" data-type="custom">
+                    <div class="card-icon">
+                        <i class="fas fa-cogs"></i>
+                    </div>
+                    <h3 class="card-title">حل مخصص</h3>
+                    <p class="card-description">مشروع مخصص حسب احتياجاتك</p>
+                    <div class="card-features">
+                        <span class="feature-tag">تصميم مخصص</span>
+                        <span class="feature-tag">تكامل مرن</span>
+                        <span class="feature-tag">دعم مستمر</span>
+                    </div>
+                    <div class="card-price">حسب <span class="price">المتطلبات</span></div>
+                </div>
+
+                <div class="project-type-card" data-type="consultation">
+                    <div class="card-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="card-title">استشارة تقنية</h3>
+                    <p class="card-description">استشارة ومراجعة تقنية للمشاريع</p>
+                    <div class="card-features">
+                        <span class="feature-tag">تحليل المتطلبات</span>
+                        <span class="feature-tag">اختيار التقنيات</span>
+                        <span class="feature-tag">خطة التنفيذ</span>
+                    </div>
+                    <div class="card-price">من <span class="price">500</span> ريال/ساعة</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Project Details Form -->
+        <div class="section project-form-section" id="projectFormSection" style="display: none;">
+            <h2 class="section-title">تفاصيل مشروعك</h2>
+            <div class="selected-type-display" id="selectedTypeDisplay"></div>
+
+            <form class="project-form" id="projectForm">
+                <!-- Step 1: Project Info -->
+                <div class="form-step active" id="step1">
+                    <h3 class="step-title">المعلومات الأساسية</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">اسم المشروع *</label>
+                        <input type="text" class="form-input" name="project_name" required
+                            placeholder="اكتب اسم مشروعك">
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">اسمك الكامل *</label>
+                            <input type="text" class="form-input" name="client_name" required
+                                placeholder="الاسم الكامل">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">البريد الإلكتروني *</label>
+                            <input type="email" class="form-input" name="client_email" required
+                                placeholder="example@email.com">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">رقم الهاتف *</label>
+                            <input type="tel" class="form-input" name="client_phone" required placeholder="05xxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الشركة/المؤسسة</label>
+                            <input type="text" class="form-input" name="company" placeholder="اسم الشركة (اختياري)">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">وصف المشروع *</label>
+                        <textarea class="form-textarea" name="project_description" required rows="4"
+                            placeholder="اشرح فكرة مشروعك بالتفصيل..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 2: Technical Requirements -->
+                <div class="form-step" id="step2">
+                    <h3 class="step-title">المتطلبات التقنية</h3>
+
+                    <div class="form-group">
+                        <label class="form-label">الميزات المطلوبة</label>
+                        <div class="checkbox-grid">
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="user-auth">
+                                <span class="checkmark"></span>
+                                تسجيل دخول المستخدمين
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="admin-panel">
+                                <span class="checkmark"></span>
+                                لوحة إدارة
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="payment">
+                                <span class="checkmark"></span>
+                                نظام دفع
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="notifications">
+                                <span class="checkmark"></span>
+                                إشعارات فورية
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="chat">
+                                <span class="checkmark"></span>
+                                نظام محادثة
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="analytics">
+                                <span class="checkmark"></span>
+                                تحليلات وتقارير
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="api-integration">
+                                <span class="checkmark"></span>
+                                تكامل APIs خارجية
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" name="features" value="multilingual">
+                                <span class="checkmark"></span>
+                                دعم متعدد اللغات
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">المنصة المستهدفة</label>
+                            <select class="form-select" name="target_platform">
+                                <option value="">اختر المنصة</option>
+                                <option value="web">متصفح الويب</option>
+                                <option value="ios">iOS</option>
+                                <option value="android">Android</option>
+                                <option value="cross-platform">متعدد المنصات</option>
+                                <option value="desktop">سطح المكتب</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">عدد المستخدمين المتوقع</label>
+                            <select class="form-select" name="expected_users">
+                                <option value="">اختر النطاق</option>
+                                <option value="small">أقل من 1000 مستخدم</option>
+                                <option value="medium">1000 - 10,000 مستخدم</option>
+                                <option value="large">10,000 - 100,000 مستخدم</option>
+                                <option value="enterprise">أكثر من 100,000 مستخدم</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">متطلبات إضافية</label>
+                        <textarea class="form-textarea" name="additional_requirements" rows="3"
+                            placeholder="أي متطلبات تقنية أو ميزات إضافية تحتاجها..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Step 3: Timeline & Budget -->
+                <div class="form-step" id="step3">
+                    <h3 class="step-title">الجدول الزمني والميزانية</h3>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">الجدول الزمني المطلوب</label>
+                            <select class="form-select" name="timeline" required>
+                                <option value="">اختر المدة</option>
+                                <option value="asap">في أسرع وقت ممكن</option>
+                                <option value="1-month">خلال شهر</option>
+                                <option value="2-3-months">2-3 أشهر</option>
+                                <option value="3-6-months">3-6 أشهر</option>
+                                <option value="6-months-plus">أكثر من 6 أشهر</option>
+                                <option value="flexible">مرن</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">الميزانية المتاحة</label>
+                            <select class="form-select" name="budget" required>
+                                <option value="">اختر النطاق</option>
+                                <option value="under-10k">أقل من 10,000 ريال</option>
+                                <option value="10-25k">10,000 - 25,000 ريال</option>
+                                <option value="25-50k">25,000 - 50,000 ريال</option>
+                                <option value="50-100k">50,000 - 100,000 ريال</option>
+                                <option value="over-100k">أكثر من 100,000 ريال</option>
+                                <option value="discuss">مفتوح للنقاش</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">تاريخ البدء المفضل</label>
+                        <input type="date" class="form-input" name="preferred_start_date">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">أولوية المشروع</label>
+                        <div class="radio-group">
+                            <label class="radio-item">
+                                <input type="radio" name="priority" value="low">
+                                <span class="radio-mark"></span>
+                                منخفضة - لديَ وقت كافي
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="priority" value="medium" checked>
+                                <span class="radio-mark"></span>
+                                متوسطة - خطة عمل عادية
+                            </label>
+                            <label class="radio-item">
+                                <input type="radio" name="priority" value="high">
+                                <span class="radio-mark"></span>
+                                عالية - مشروع عاجل
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">ملاحظات إضافية</label>
+                        <textarea class="form-textarea" name="additional_notes" rows="3"
+                            placeholder="أي معلومات أو ملاحظات إضافية تود مشاركتها..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Form Navigation -->
+                <div class="form-navigation">
+                    <button type="button" class="nav-btn prev-btn" id="prevBtn" style="display: none;">
+                        <i class="fas fa-arrow-right"></i>
+                        السابق
+                    </button>
+
+                    <div class="step-indicator">
+                        <div class="step-dot active" data-step="1">1</div>
+                        <div class="step-dot" data-step="2">2</div>
+                        <div class="step-dot" data-step="3">3</div>
+                    </div>
+
+                    <button type="button" class="nav-btn next-btn" id="nextBtn">
+                        التالي
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+
+                    <button type="submit" class="nav-btn submit-btn" id="submitBtn" style="display: none;">
+                        <i class="fas fa-rocket"></i>
+                        إرسال طلب المشروع
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-section" id="successSection" style="display: none;">
+            <div class="success-content">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 class="success-title">تم إرسال طلبك بنجاح!</h2>
+                <p class="success-message">
+                    شكراً لك على اختياري لتطوير مشروعك. سأتواصل معك خلال 24 ساعة لمناقشة التفاصيل والبدء في رحلة تطوير
+                    مشروعك.
+                </p>
+                <div class="success-actions">
+                    <a href="#" class="success-btn primary">
+                        <i class="fas fa-whatsapp"></i>
+                        تواصل عبر واتساب
+                    </a>
+                    <a href="#" class="success-btn secondary">
+                        <i class="fas fa-home"></i>
+                        العودة للرئيسية
+                    </a>
+                </div>
+                <div class="success-timeline">
+                    <h3>ما التالي؟</h3>
+                    <div class="timeline-item">
+                        <span class="timeline-number">1</span>
+                        <div class="timeline-content">
+                            <strong>مكالمة أولية (خلال 24 ساعة)</strong>
+                            <p>مناقشة تفاصيل المشروع وتوضيح المتطلبات</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-number">2</span>
+                        <div class="timeline-content">
+                            <strong>اقتراح فني وتسعير</strong>
+                            <p>تقديم خطة العمل والجدول الزمني والتكلفة النهائية</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <span class="timeline-number">3</span>
+                        <div class="timeline-content">
+                            <strong>البدء في التطوير</strong>
+                            <p>تنفيذ المشروع مع متابعة دورية للتقدم</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Why Choose Me Section -->
+        <div class="section why-choose-section">
+            <h2 class="section-title">لماذا أعمل معي؟</h2>
+            <div class="benefits-grid">
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>تطوير سريع</h3>
+                    <p>استخدم أحدث التقنيات والأدوات لضمان تسليم سريع وعالي الجودة</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>أمان متقدم</h3>
+                    <p>أطبق أفضل ممارسات الأمان لحماية مشروعك وبيانات مستخدميك</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>دعم مستمر</h3>
+                    <p>أقدم دعم فني مستمر وصيانة دورية لضمان استمرارية العمل</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>قابل للتوسع</h3>
+                    <p>أصمم الحلول لتنمو مع نمو أعمالك بدون قيود تقنية</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="section faq-section">
+            <h2 class="section-title">الأسئلة الشائعة</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كم يستغرق تطوير المشروع عادة؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>يعتمد ذلك على نوع وتعقيد المشروع. المشاريع البسيطة تستغرق 2-4 أسابيع، بينما المشاريع المعقدة
+                            قد تستغرق 2-6 أشهر. سأقدم لك جدول زمني مفصل بعد مناقشة متطلبات مشروعك.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل تقدم ضمان على العمل؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>نعم، أقدم ضمان 6 أشهر على جميع الأعمال ضد العيوب البرمجية، بالإضافة إلى دعم فني مجاني لمدة 3
+                            أشهر بعد التسليم.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>كيف تتم عملية الدفع؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>عادة أطلب 40% مقدم عند بدء العمل، 40% عند الوصول لمنتصف المشروع، و20% عند التسليم النهائي.
+                            يمكننا مناقشة خطة دفع مخصصة حسب حجم المشروع.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>هل تعمل مع العملاء خارج السعودية؟</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>بالطبع! أعمل مع عملاء من جميع أنحاء العالم. نتواصل عبر الإنترنت ونستخدم أدوات التعاون الحديثة
+                            لضمان سير العمل بسلاسة.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="start-project-script.js"></script>
+</body>
+
+</html>
