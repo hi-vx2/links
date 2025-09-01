@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
     <title>معرض الأعمال - الداهوم</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +47,14 @@
             bottom: 0;
             background: url("data:image/svg+xml,%3Csvg width='50' height='50' viewBox='0 0 50 50' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006C35' fill-opacity='0.03'%3E%3Cpath d='M25 25l12-12v24l-12-12z'/%3E%3C/g%3E%3C/svg%3E") repeat;
             z-index: -1;
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        button {
+            -webkit-tap-highlight-color: transparent;
         }
 
         .container {
@@ -553,7 +562,6 @@
         .modal-content button:hover {
             background: var(--light-green);
         }
-
 
         /* Animations */
         @keyframes fadeInDown {
