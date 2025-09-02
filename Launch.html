@@ -939,6 +939,30 @@
                 gap: 12px;
             }
         }
+
+        .project-type-card.unavailable {
+            background: var(--najdi-beige);
+            border: 1px solid var(--najdi-green);
+            pointer-events: none;
+            position: relative;
+        }
+
+        .project-type-card.unavailable .card-price .price {
+            color: var(--warning-orange);
+            font-weight: 700;
+        }
+
+        .project-type-card.unavailable::after {
+            content: "غير متاح حاليًا";
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--najdi-green);
+            color: var(--white);
+            font-size: 12px;
+            padding: 2px 6px;
+            border-radius: 6px;
+        }
     </style>
 </head>
 
@@ -947,7 +971,7 @@
         <!-- Header -->
         <div class="header">
             <div class="logo-section">
-                <h1 class="main-title">ابدأ مشروعك معي</h1>
+                <h1 class="main-title">ابدأ مشروعك</h1>
                 <p class="subtitle">من الفكرة إلى التنفيذ - دعني أحول رؤيتك إلى واقع تقني</p>
             </div>
             <div class="header-visual">
@@ -1407,7 +1431,1659 @@
         </div>
     </div>
 
-    <script src="start-project-script.js"></script>
-</body>
 
+
+    <script>
+        // السكربت لتحديد الكروت المعطلة
+        document.addEventListener("DOMContentLoaded", () => {
+            const unavailableTypes = ["custom", "ecommerce", "mobile-app"]; // ضع هنا data-type للكروت المعطلة
+            const cards = document.querySelectorAll(".project-type-card");
+
+            cards.forEach(card => {
+                const type = card.getAttribute("data-type");
+                if (unavailableTypes.includes(type)) {
+                    card.classList.add("unavailable");
+                    // استبدال السعر بالنص "الخدمة غير متوفرة"
+                    const priceValue = card.querySelector(".price-value");
+                    if (priceValue) {
+                        priceValue.textContent = "الخدمة غير متوفرة";
+                    }
+                }
+            });
+        });
+
+    </script>
+
+    <script>
+        // Project type selection
+        let selectedProjectType = null;
+        let currentStep = 1;
+        const totalSteps = 3;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            initializeProjectTypeSelection();
+            initializeFormSteps();
+            initializeFAQ();
+            //initializeAnimations();
+        });
+
+        // Project type selection functionality
+        function initializeProjectTypeSelection() {
+            const projectTypeCards = document.querySelectorAll('.project-type-card');
+            const projectFormSection = document.getElementById('projectFormSection');
+            const selectedTypeDisplay = document.getElementById('selectedTypeDisplay');
+
+            projectTypeCards.forEach(card => {
+                card.addEventListener('click', function () {
+                    // Remove active class from all cards
+                    projectTypeCards.forEach(c => c.classList.remove('active'));
+
+                    // Add active class to clicked card
+                    this.classList.add('active');
+
+                    // Get project type
+                    selectedProjectType = this.getAttribute('data-type');
+                    const projectTitle = this.querySelector('.card-title').textContent;
+                    const projectPrice = this.querySelector('.card-price').textContent;
+
+                    // Update selected type display
+                    selectedTypeDisplay.innerHTML = `
+                <div class="selected-type-card">
+                    <div class="selected-icon">${this.querySelector('.card-icon').innerHTML}</div>
+                    <div class="selected-info">
+                        <h3>${projectTitle}</h3>
+                        <p>${projectPrice}</p>
+                    </div>
+                    <button type="button" class="change-type-btn" onclick="changeProjectType()">
+                        <i class="fas fa-edit"></i>
+                        تغيير
+                    </button>
+                </div>
+            `;
+
+                    // Show form section with animation
+                    setTimeout(() => {
+                        projectFormSection.style.display = 'block';
+                        projectFormSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                        setTimeout(() => {
+                            projectFormSection.classList.add('show');
+                        }, 100);
+                    }, 300);
+                });
+
+                // Hover effects
+                card.addEventListener('mouseenter', function () {
+                    this.style.transform = 'translateY(-8px) scale(1.02)';
+                });
+
+                card.addEventListener('mouseleave', function () {
+                    if (!this.classList.contains('active')) {
+                        this.style.transform = 'translateY(0) scale(1)';
+                    }
+                });
+            });
+        }
+
+        // Change project type
+        function changeProjectType() {
+            const projectFormSection = document.getElementById('projectFormSection');
+            const projectTypeCards = document.querySelectorAll('.project-type-card');
+
+            // Reset selection
+            projectTypeCards.forEach(card => card.classList.remove('active'));
+            selectedProjectType = null;
+
+            // Hide form section
+            projectFormSection.classList.remove('show');
+            setTimeout(() => {
+                projectFormSection.style.display = 'none';
+                // Scroll back to project types
+                document.querySelector('.project-types').scrollIntoView({ behavior: 'smooth' });
+            }, 300);
+
+            // Reset form
+            resetForm();
+        }
+
+        // Form steps functionality
+        function initializeFormSteps() {
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const form = document.getElementById('projectForm');
+
+            nextBtn.addEventListener('click', nextStep);
+            prevBtn.addEventListener('click', prevStep);
+            form.addEventListener('submit', handleFormSubmit);
+
+            // Form validation on input
+            const requiredInputs = form.querySelectorAll('input[required], select[required], textarea[required]');
+            requiredInputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearFieldError);
+            });
+        }
+
+        // Next step
+        function nextStep() {
+            if (validateCurrentStep()) {
+                if (currentStep < totalSteps) {
+                    currentStep++;
+                    updateStepDisplay();
+                }
+            }
+        }
+
+        // Previous step
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStepDisplay();
+            }
+        }
+
+        // Update step display
+        function updateStepDisplay() {
+            // Hide all steps
+            document.querySelectorAll('.form-step').forEach(step => {
+                step.classList.remove('active');
+            });
+
+            // Show current step
+            document.getElementById(`step${currentStep}`).classList.add('active');
+
+            // Update step indicators
+            document.querySelectorAll('.step-dot').forEach((dot, index) => {
+                dot.classList.remove('active', 'completed');
+                if (index + 1 < currentStep) {
+                    dot.classList.add('completed');
+                } else if (index + 1 === currentStep) {
+                    dot.classList.add('active');
+                }
+            });
+
+            // Update navigation buttons
+            const nextBtn = document.getElementById('nextBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const submitBtn = document.getElementById('submitBtn');
+
+            // Show/hide previous button
+            prevBtn.style.display = currentStep > 1 ? 'flex' : 'none';
+
+            // Show/hide next/submit buttons
+            if (currentStep === totalSteps) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'flex';
+            } else {
+                nextBtn.style.display = 'flex';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Validate current step
+        function validateCurrentStep() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const requiredFields = currentStepElement.querySelectorAll('input[required], select[required], textarea[required]');
+            let isValid = true;
+
+            requiredFields.forEach(field => {
+                if (!validateField({ target: field })) {
+                    isValid = false;
+                }
+            });
+
+            return isValid;
+        }
+
+        // Validate individual field
+        function validateField(event) {
+            const field = event.target;
+            const value = field.value.trim();
+            let isValid = true;
+
+            // Clear previous error
+            field.classList.remove('error');
+
+            // Required field validation
+            if (field.hasAttribute('required') && !value) {
+                showFieldError(field, 'هذا الحقل مطلوب');
+                isValid = false;
+            }
+
+            // Email validation
+            if (field.type === 'email' && value && !isValidEmail(value)) {
+                showFieldError(field, 'البريد الإلكتروني غير صحيح');
+                isValid = false;
+            }
+
+            // Phone validation
+            if (field.type === 'tel' && value && !isValidPhone(value)) {
+                showFieldError(field, 'رقم الهاتف غير صحيح');
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        // Show field error
+        function showFieldError(field, message) {
+            field.classList.add('error');
+
+            // Remove existing error message
+            const existingError = field.parentNode.querySelector('.error-message');
+            if (existingError) {
+                existingError.remove();
+            }
+
+            // Add error message
+            const errorElement = document.createElement('div');
+            errorElement.className = 'error-message';
+            errorElement.textContent = message;
+            errorElement.style.cssText = `
+        color: var(--error-red);
+        font-size: 14px;
+        margin-top: 4px;
+        animation: fadeInUp 0.3s ease;
+    `;
+
+            field.parentNode.appendChild(errorElement);
+        }
+
+        // Clear field error
+        function clearFieldError(event) {
+            const field = event.target;
+            field.classList.remove('error');
+
+            const errorMessage = field.parentNode.querySelector('.error-message');
+            if (errorMessage) {
+                errorMessage.remove();
+            }
+        }
+
+        // Validation helpers
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^05\d{8}$/;
+            return phoneRegex.test(phone);
+        }
+
+        // Form submission
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(event.target);
+
+            // Add project type to form data
+            formData.append('project_type', selectedProjectType);
+
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+
+            // Simulate form submission
+            setTimeout(() => {
+                // Hide form and show success
+                document.getElementById('projectFormSection').style.display = 'none';
+                document.getElementById('successSection').style.display = 'block';
+                document.getElementById('successSection').scrollIntoView({ behavior: 'smooth' });
+
+                // Log form data (for development)
+                console.log('بيانات المشروع المرسلة:');
+                for (let [key, value] of formData.entries()) {
+                    console.log(`${key}: ${value}`);
+                }
+
+                // Reset button state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+
+            }, 2000);
+        }
+
+        // Reset form
+        function resetForm() {
+            currentStep = 1;
+            document.getElementById('projectForm').reset();
+            updateStepDisplay();
+
+            // Clear all errors
+            document.querySelectorAll('.error-message').forEach(error => error.remove());
+            document.querySelectorAll('.error').forEach(field => field.classList.remove('error'));
+        }
+
+        // FAQ functionality
+        function initializeFAQ() {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+
+                question.addEventListener('click', function () {
+                    const isActive = item.classList.contains('active');
+
+                    // Close all FAQ items
+                    faqItems.forEach(faq => faq.classList.remove('active'));
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }
+
+
+        // Phone number formatting
+        document.addEventListener('DOMContentLoaded', () => {
+            const phoneInput = document.querySelector('input[name="client_phone"]');
+            if (phoneInput) {
+                phoneInput.addEventListener('input', function (e) {
+                    let value = e.target.value.replace(/\D/g, '');
+
+                    // Remove country code if present
+                    if (value.startsWith('966')) {
+                        value = value.substring(3);
+                    }
+
+                    // Ensure it starts with 05
+                    if (value.length > 0 && !value.startsWith('05')) {
+                        if (value.startsWith('5')) {
+                            value = '0' + value;
+                        } else if (value.startsWith('0') && !value.startsWith('05')) {
+                            value = '05' + value.substring(1);
+                        } else {
+                            value = '05' + value;
+                        }
+                    }
+
+                    // Limit to 10 digits
+                    if (value.length > 10) {
+                        value = value.substring(0, 10);
+                    }
+
+                    e.target.value = value;
+                });
+            }
+        });
+
+        // Project cost calculator
+        function calculateProjectCost() {
+            const formData = new FormData(document.getElementById('projectForm'));
+            let baseCost = 0;
+
+            // Base cost by project type
+            const projectTypeCosts = {
+                'web-app': 15000,
+                'mobile-app': 25000,
+                'api-system': 12000,
+                'ecommerce': 20000,
+                'custom': 10000,
+                'consultation': 500
+            };
+
+            baseCost = projectTypeCosts[selectedProjectType] || 0;
+
+            // Additional features cost
+            const features = formData.getAll('features');
+            const featureCosts = {
+                'user-auth': 2000,
+                'admin-panel': 3000,
+                'payment': 5000,
+                'notifications': 1500,
+                'chat': 3000,
+                'analytics': 2500,
+                'api-integration': 2000,
+                'multilingual': 3000
+            };
+
+            let additionalCost = 0;
+            features.forEach(feature => {
+                additionalCost += featureCosts[feature] || 0;
+            });
+
+            // Timeline multiplier
+            const timeline = formData.get('timeline');
+            let timelineMultiplier = 1;
+            if (timeline === 'asap') timelineMultiplier = 1.5;
+            else if (timeline === '1-month') timelineMultiplier = 1.3;
+
+            // Users scale multiplier
+            const users = formData.get('expected_users');
+            let usersMultiplier = 1;
+            if (users === 'large') usersMultiplier = 1.3;
+            else if (users === 'enterprise') usersMultiplier = 1.6;
+
+            const totalCost = Math.round((baseCost + additionalCost) * timelineMultiplier * usersMultiplier);
+
+            return {
+                base: baseCost,
+                features: additionalCost,
+                total: totalCost,
+                timeline: timeline,
+                timelineMultiplier: timelineMultiplier,
+                usersMultiplier: usersMultiplier
+            };
+        }
+
+        // Show cost estimate
+        function showCostEstimate() {
+            const costData = calculateProjectCost();
+
+            // Create cost display
+            const costDisplay = document.createElement('div');
+            costDisplay.className = 'cost-estimate';
+            costDisplay.innerHTML = `
+        <div class="cost-card">
+            <h3>تقدير التكلفة الأولي</h3>
+            <div class="cost-breakdown">
+                <div class="cost-item">
+                    <span>التكلفة الأساسية:</span>
+                    <span>${costData.base.toLocaleString()} ريال</span>
+                </div>
+                <div class="cost-item">
+                    <span>الميزات الإضافية:</span>
+                    <span>${costData.features.toLocaleString()} ريال</span>
+                </div>
+                <div class="cost-total">
+                    <span>التكلفة المقدرة:</span>
+                    <span>${costData.total.toLocaleString()} ريال</span>
+                </div>
+            </div>
+            <p class="cost-note">* هذا تقدير أولي، السعر النهائي سيتم تحديده بعد مناقشة التفاصيل</p>
+        </div>
+    `;
+
+            // Add CSS for cost display
+            const costStyle = document.createElement('style');
+            costStyle.textContent = `
+        .cost-estimate {
+            margin: 24px 0;
+            animation: fadeInUp 0.5s ease;
+        }
+        .cost-card {
+            background: linear-gradient(135deg, var(--najdi-green), var(--light-green));
+            color: white;
+            padding: 24px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .cost-card h3 {
+            font-size: 20px;
+            margin-bottom: 16px;
+        }
+        .cost-breakdown {
+            margin-bottom: 16px;
+        }
+        .cost-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            opacity: 0.9;
+        }
+        .cost-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 18px;
+            font-weight: 700;
+            border-top: 1px solid rgba(255,255,255,0.3);
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+        .cost-note {
+            font-size: 12px;
+            opacity: 0.8;
+            margin-top: 16px;
+        }
+    `;
+            document.head.appendChild(costStyle);
+
+            // Insert cost display before form navigation
+            const formNavigation = document.querySelector('.form-navigation');
+            const existingCost = document.querySelector('.cost-estimate');
+
+            if (existingCost) {
+                existingCost.remove();
+            }
+
+            formNavigation.parentNode.insertBefore(costDisplay, formNavigation);
+        }
+
+        // FAQ functionality
+        function initializeFAQ() {
+            const faqItems = document.querySelectorAll('.faq-item');
+
+            faqItems.forEach(item => {
+                const question = item.querySelector('.faq-question');
+
+                question.addEventListener('click', function () {
+                    const isActive = item.classList.contains('active');
+
+                    // Close all FAQ items
+                    faqItems.forEach(faq => faq.classList.remove('active'));
+
+                    // Toggle current item
+                    if (!isActive) {
+                        item.classList.add('active');
+                    }
+                });
+            });
+        }
+
+        // Form submission handler
+        function handleFormSubmit(event) {
+            event.preventDefault();
+
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(event.target);
+
+            // Add project type to form data
+            formData.append('project_type', selectedProjectType);
+
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+
+            // Collect all form data
+            const projectData = {
+                type: selectedProjectType,
+                name: formData.get('project_name'),
+                client: {
+                    name: formData.get('client_name'),
+                    email: formData.get('client_email'),
+                    phone: formData.get('client_phone'),
+                    company: formData.get('company')
+                },
+                description: formData.get('project_description'),
+                features: formData.getAll('features'),
+                platform: formData.get('target_platform'),
+                users: formData.get('expected_users'),
+                requirements: formData.get('additional_requirements'),
+                timeline: formData.get('timeline'),
+                budget: formData.get('budget'),
+                startDate: formData.get('preferred_start_date'),
+                priority: formData.get('priority'),
+                notes: formData.get('additional_notes'),
+                timestamp: new Date().toISOString(),
+                costEstimate: calculateProjectCost()
+            };
+
+            // Simulate API call
+            setTimeout(() => {
+                // Log project data
+                console.log('🚀 بيانات المشروع الجديد:', projectData);
+
+                // Hide form and show success
+                document.getElementById('projectFormSection').style.display = 'none';
+                document.getElementById('successSection').style.display = 'block';
+                document.getElementById('successSection').scrollIntoView({ behavior: 'smooth' });
+
+                // Reset button state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-rocket"></i> إرسال طلب المشروع';
+
+                // Send welcome email simulation
+                sendWelcomeNotification(projectData);
+
+            }, 2000);
+        }
+
+        // Send welcome notification
+        function sendWelcomeNotification(projectData) {
+            // Create notification
+            const notification = document.createElement('div');
+            notification.className = 'success-notification';
+            notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-check-circle"></i>
+            <span>تم إرسال بريد تأكيد إلى ${projectData.client.email}</span>
+        </div>
+    `;
+
+            notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: var(--success-green);
+        color: white;
+        padding: 16px 24px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(39, 174, 96, 0.3);
+        z-index: 9999;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+    `;
+
+            document.body.appendChild(notification);
+
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+
+            // Auto remove
+            setTimeout(() => {
+                notification.style.transform = 'translateX(100%)';
+                setTimeout(() => notification.remove(), 300);
+            }, 4000);
+        }
+
+        // Progress tracking
+        let formProgress = {
+            step1: false,
+            step2: false,
+            step3: false
+        };
+
+        function updateProgress() {
+            const currentStepElement = document.getElementById(`step${currentStep}`);
+            const filledFields = currentStepElement.querySelectorAll('input:not([value=""]), select:not([value=""]), textarea:not([value=""])');
+            const totalFields = currentStepElement.querySelectorAll('input, select, textarea');
+
+            const progressPercentage = (filledFields.length / totalFields.length) * 100;
+
+            // Update progress indicator if exists
+            const progressBar = document.querySelector('.progress-bar');
+            if (progressBar) {
+                progressBar.style.width = `${progressPercentage}%`;
+            }
+
+            formProgress[`step${currentStep}`] = progressPercentage > 50;
+        }
+
+        // Auto-save functionality (in memory)
+        let formDraftData = {};
+
+        function autoSaveForm() {
+            const form = document.getElementById('projectForm');
+            const formData = new FormData(form);
+
+            formDraftData = {
+                type: selectedProjectType,
+                timestamp: Date.now(),
+                data: {}
+            };
+
+            for (let [key, value] of formData.entries()) {
+                formDraftData.data[key] = value;
+            }
+
+            console.log('📝 تم حفظ المسودة تلقائياً');
+        }
+
+        // Auto-save every 30 seconds
+        setInterval(() => {
+            if (selectedProjectType && document.getElementById('projectFormSection').style.display === 'block') {
+                autoSaveForm();
+            }
+        }, 30000);
+
+        // Load draft data
+        function loadDraftData() {
+            if (formDraftData.data) {
+                const form = document.getElementById('projectForm');
+
+                Object.keys(formDraftData.data).forEach(key => {
+                    const field = form.querySelector(`[name="${key}"]`);
+                    if (field) {
+                        if (field.type === 'checkbox') {
+                            field.checked = formDraftData.data[key] === field.value;
+                        } else if (field.type === 'radio') {
+                            field.checked = formDraftData.data[key] === field.value;
+                        } else {
+                            field.value = formDraftData.data[key];
+                        }
+                    }
+                });
+
+                console.log('📂 تم استعادة بيانات المسودة');
+            }
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function (e) {
+            // Ctrl/Cmd + Enter to submit
+            if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                if (currentStep === totalSteps) {
+                    document.getElementById('submitBtn').click();
+                } else {
+                    document.getElementById('nextBtn').click();
+                }
+            }
+
+            // Escape to go back
+            if (e.key === 'Escape' && currentStep > 1) {
+                prevStep();
+            }
+        });
+
+        // Dynamic form updates based on selections
+        document.addEventListener('change', function (e) {
+            // Update cost estimate when features change
+            if (e.target.name === 'features' || e.target.name === 'timeline' || e.target.name === 'expected_users') {
+                if (currentStep === 3) {
+                    setTimeout(() => {
+                        showCostEstimate();
+                    }, 300);
+                }
+            }
+
+            // Show additional fields based on project type
+            if (e.target.name === 'target_platform' && e.target.value === 'cross-platform') {
+                showAdditionalPlatformOptions();
+            }
+
+            // Update progress
+            updateProgress();
+        });
+
+        // Show additional platform options
+        function showAdditionalPlatformOptions() {
+            const targetPlatformGroup = document.querySelector('select[name="target_platform"]').closest('.form-group');
+
+            // Check if additional options already exist
+            if (targetPlatformGroup.nextElementSibling?.classList.contains('additional-platform-options')) {
+                return;
+            }
+
+            const additionalOptions = document.createElement('div');
+            additionalOptions.className = 'form-group additional-platform-options';
+            additionalOptions.innerHTML = `
+        <label class="form-label">تفضيلات التطوير المتعدد</label>
+        <div class="checkbox-grid">
+            <label class="checkbox-item">
+                <input type="checkbox" name="platform_features" value="native-performance">
+                <span class="checkmark"></span>
+                أداء أصلي محسن
+            </label>
+            <label class="checkbox-item">
+                <input type="checkbox" name="platform_features" value="offline-support">
+                <span class="checkmark"></span>
+                دعم العمل بدون إنترنت
+            </label>
+        </div>
+    `;
+
+            targetPlatformGroup.parentNode.insertBefore(additionalOptions, targetPlatformGroup.nextSibling);
+        }
+
+        // Success page interactions
+        document.addEventListener('click', function (e) {
+            if (e.target.closest('.success-btn.primary')) {
+                e.preventDefault();
+                const phone = '+966501234567';
+                const message = 'مرحباً! أرسلت طلب مشروع عبر الموقع وأرغب في مناقشة التفاصيل.';
+                const whatsappUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
+            }
+        });
+
+        // Analytics tracking
+        function trackEvent(eventName, data = {}) {
+            console.log(`📊 تتبع الحدث: ${eventName}`, data);
+
+            // Here you would send to your analytics service
+            // Example: gtag('event', eventName, data);
+        }
+
+        // Track form interactions
+        document.addEventListener('DOMContentLoaded', () => {
+            // Track project type selection
+            document.querySelectorAll('.project-type-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    trackEvent('project_type_selected', {
+                        type: card.getAttribute('data-type'),
+                        title: card.querySelector('.card-title').textContent
+                    });
+                });
+            });
+
+            // Track form step completion
+            const originalNextStep = nextStep;
+            nextStep = function () {
+                trackEvent('form_step_completed', { step: currentStep });
+                originalNextStep();
+            };
+
+            // Track form submission
+            const originalHandleFormSubmit = handleFormSubmit;
+            handleFormSubmit = function (event) {
+                trackEvent('form_submitted', {
+                    project_type: selectedProjectType,
+                    timestamp: new Date().toISOString()
+                });
+                originalHandleFormSubmit(event);
+            };
+        });
+
+        // Form validation enhancement
+        function enhancedValidation() {
+            // Real-time email validation
+            const emailField = document.querySelector('input[name="client_email"]');
+            if (emailField) {
+                emailField.addEventListener('input', function () {
+                    const value = this.value;
+                    if (value && !isValidEmail(value)) {
+                        this.style.borderColor = 'var(--warning-orange)';
+                    } else if (value && isValidEmail(value)) {
+                        this.style.borderColor = 'var(--success-green)';
+                    }
+                });
+            }
+
+            // Project name suggestions
+            const projectNameField = document.querySelector('input[name="project_name"]');
+            if (projectNameField) {
+                projectNameField.addEventListener('input', function () {
+                    // Suggest names based on project type
+                    if (selectedProjectType && this.value.length > 2) {
+                        showProjectNameSuggestions(this.value);
+                    }
+                });
+            }
+        }
+
+        // Initialize enhanced validation
+        document.addEventListener('DOMContentLoaded', enhancedValidation);
+
+        // Project name suggestions
+        function showProjectNameSuggestions(input) {
+            const suggestions = {
+                'web-app': ['منصة', 'موقع', 'نظام', 'تطبيق'],
+                'mobile-app': ['تطبيق', 'أبليكيشن', 'برنامج'],
+                'api-system': ['واجهة', 'نظام', 'خدمة', 'API'],
+                'ecommerce': ['متجر', 'منصة', 'سوق', 'تجارة'],
+                'custom': ['حل', 'نظام', 'منصة', 'تطبيق'],
+                'consultation': ['استشارة', 'مراجعة', 'تحليل', 'دراسة']
+            };
+
+            const projectSuggestions = suggestions[selectedProjectType] || [];
+            const matchingSuggestions = projectSuggestions.filter(suggestion =>
+                !input.toLowerCase().includes(suggestion.toLowerCase())
+            );
+
+            if (matchingSuggestions.length > 0) {
+                showSuggestionsDropdown(matchingSuggestions, input);
+            }
+        }
+
+        // Show suggestions dropdown
+        function showSuggestionsDropdown(suggestions, currentInput) {
+            const projectNameField = document.querySelector('input[name="project_name"]');
+            const existingDropdown = document.querySelector('.suggestions-dropdown');
+
+            // Remove existing dropdown
+            if (existingDropdown) {
+                existingDropdown.remove();
+            }
+
+            // Create suggestions dropdown
+            const dropdown = document.createElement('div');
+            dropdown.className = 'suggestions-dropdown';
+            dropdown.style.cssText = `
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: white;
+        border: 2px solid var(--najdi-green);
+        border-top: none;
+        border-radius: 0 0 12px 12px;
+        max-height: 200px;
+        overflow-y: auto;
+        z-index: 1000;
+        box-shadow: 0 8px 20px rgba(0, 108, 53, 0.2);
+    `;
+
+            suggestions.forEach(suggestion => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.className = 'suggestion-item';
+                suggestionItem.textContent = `${suggestion} ${currentInput}`;
+                suggestionItem.style.cssText = `
+            padding: 12px 16px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            border-bottom: 1px solid rgba(0, 108, 53, 0.1);
+        `;
+
+                suggestionItem.addEventListener('mouseenter', function () {
+                    this.style.background = 'rgba(0, 108, 53, 0.05)';
+                });
+
+                suggestionItem.addEventListener('mouseleave', function () {
+                    this.style.background = 'transparent';
+                });
+
+                suggestionItem.addEventListener('click', function () {
+                    projectNameField.value = this.textContent;
+                    dropdown.remove();
+                    projectNameField.focus();
+                });
+
+                dropdown.appendChild(suggestionItem);
+            });
+
+            projectNameField.parentNode.appendChild(dropdown);
+
+            // Remove dropdown when clicking outside
+            setTimeout(() => {
+                document.addEventListener('click', function (e) {
+                    if (!dropdown.contains(e.target) && e.target !== projectNameField) {
+                        dropdown.remove();
+                    }
+                }, { once: true });
+            }, 100);
+        }
+
+        // Form validation enhancement
+        function enhancedValidation() {
+            // Real-time email validation
+            const emailField = document.querySelector('input[name="client_email"]');
+            if (emailField) {
+                emailField.addEventListener('input', function () {
+                    const value = this.value;
+                    clearTimeout(this.validateTimeout);
+
+                    this.validateTimeout = setTimeout(() => {
+                        if (value && !isValidEmail(value)) {
+                            this.style.borderColor = 'var(--warning-orange)';
+                            showFieldHint(this, 'تأكد من صيغة البريد الإلكتروني');
+                        } else if (value && isValidEmail(value)) {
+                            this.style.borderColor = 'var(--success-green)';
+                            clearFieldHint(this);
+                        }
+                    }, 500);
+                });
+            }
+
+            // Project name suggestions
+            const projectNameField = document.querySelector('input[name="project_name"]');
+            if (projectNameField) {
+                projectNameField.addEventListener('input', function () {
+                    if (selectedProjectType && this.value.length > 2) {
+                        clearTimeout(this.suggestionTimeout);
+                        this.suggestionTimeout = setTimeout(() => {
+                            showProjectNameSuggestions(this.value);
+                        }, 300);
+                    }
+                });
+            }
+
+            // Budget validation based on project type
+            const budgetField = document.querySelector('select[name="budget"]');
+            if (budgetField) {
+                budgetField.addEventListener('change', function () {
+                    validateBudgetSelection(this.value);
+                });
+            }
+
+            // Timeline validation
+            const timelineField = document.querySelector('select[name="timeline"]');
+            if (timelineField) {
+                timelineField.addEventListener('change', function () {
+                    validateTimelineSelection(this.value);
+                });
+            }
+        }
+
+        // Show field hint
+        function showFieldHint(field, message) {
+            clearFieldHint(field);
+
+            const hint = document.createElement('div');
+            hint.className = 'field-hint';
+            hint.textContent = message;
+            hint.style.cssText = `
+        color: var(--warning-orange);
+        font-size: 12px;
+        margin-top: 4px;
+        animation: fadeInUp 0.3s ease;
+    `;
+
+            field.parentNode.appendChild(hint);
+        }
+
+        // Clear field hint
+        function clearFieldHint(field) {
+            const existingHint = field.parentNode.querySelector('.field-hint');
+            if (existingHint) {
+                existingHint.remove();
+            }
+        }
+
+        // Budget validation
+        function validateBudgetSelection(budget) {
+            const budgetField = document.querySelector('select[name="budget"]');
+            const minimumBudgets = {
+                'web-app': 15000,
+                'mobile-app': 25000,
+                'api-system': 12000,
+                'ecommerce': 20000,
+                'custom': 10000
+            };
+
+            const minBudget = minimumBudgets[selectedProjectType];
+            const budgetRanges = {
+                'under-10k': 10000,
+                '10-25k': 25000,
+                '25-50k': 50000,
+                '50-100k': 100000,
+                'over-100k': 200000
+            };
+
+            const selectedBudgetMax = budgetRanges[budget];
+
+            if (minBudget && selectedBudgetMax && selectedBudgetMax < minBudget) {
+                showFieldHint(budgetField, `الميزانية المقترحة لهذا النوع من المشاريع تبدأ من ${minBudget.toLocaleString()} ريال`);
+            } else {
+                clearFieldHint(budgetField);
+            }
+        }
+
+        // Timeline validation
+        function validateTimelineSelection(timeline) {
+            const timelineField = document.querySelector('select[name="timeline"]');
+            const features = document.querySelectorAll('input[name="features"]:checked');
+
+            if (timeline === 'asap' && features.length > 3) {
+                showFieldHint(timelineField, 'المشاريع العاجلة قد تتطلب تقليل الميزات أو زيادة التكلفة');
+            } else if (timeline === '1-month' && features.length > 5) {
+                showFieldHint(timelineField, 'قد نحتاج وقت إضافي لتنفيذ جميع الميزات المطلوبة');
+            } else {
+                clearFieldHint(timelineField);
+            }
+        }
+
+        // Smart form completion
+        function smartFormCompletion() {
+            // Auto-complete company field based on email domain
+            const emailField = document.querySelector('input[name="client_email"]');
+            const companyField = document.querySelector('input[name="company"]');
+
+            if (emailField && companyField) {
+                emailField.addEventListener('blur', function () {
+                    if (this.value && !companyField.value) {
+                        const domain = this.value.split('@')[1];
+                        if (domain && !domain.includes('gmail') && !domain.includes('hotmail') && !domain.includes('yahoo')) {
+                            const companyName = domain.split('.')[0];
+                            companyField.value = companyName.charAt(0).toUpperCase() + companyName.slice(1);
+                            companyField.style.borderColor = 'var(--najdi-gold)';
+                        }
+                    }
+                });
+            }
+        }
+
+        // Initialize smart completion
+        document.addEventListener('DOMContentLoaded', smartFormCompletion);
+
+        // Progress bar functionality
+        function createProgressBar() {
+            const formSection = document.querySelector('.project-form-section');
+
+            const progressContainer = document.createElement('div');
+            progressContainer.className = 'progress-container';
+            progressContainer.innerHTML = `
+        <div class="progress-label">
+            <span>تقدم النموذج</span>
+            <span class="progress-text">0%</span>
+        </div>
+        <div class="progress-track">
+            <div class="progress-bar" style="width: 0%"></div>
+        </div>
+    `;
+
+            progressContainer.style.cssText = `
+        margin-bottom: 32px;
+        padding: 20px;
+        background: rgba(0, 108, 53, 0.05);
+        border-radius: 12px;
+        border: 1px solid rgba(0, 108, 53, 0.1);
+    `;
+
+            // Add progress bar styles
+            const progressStyle = document.createElement('style');
+            progressStyle.textContent = `
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--najdi-green);
+        }
+        .progress-track {
+            height: 8px;
+            background: rgba(0, 108, 53, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--najdi-green), var(--light-green));
+            border-radius: 4px;
+            transition: width 0.3s ease;
+        }
+    `;
+            document.head.appendChild(progressStyle);
+
+            const formTitle = formSection.querySelector('.section-title');
+            formTitle.parentNode.insertBefore(progressContainer, formTitle.nextSibling);
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const form = document.getElementById('projectForm');
+            const totalFields = form.querySelectorAll('input[required], select[required], textarea[required]');
+            const filledFields = Array.from(totalFields).filter(field => {
+                if (field.type === 'checkbox' || field.type === 'radio') {
+                    return form.querySelector(`input[name="${field.name}"]:checked`) !== null;
+                }
+                return field.value.trim() !== '';
+            });
+
+            const progressPercentage = Math.round((filledFields.length / totalFields.length) * 100);
+
+            const progressBar = document.querySelector('.progress-bar');
+            const progressText = document.querySelector('.progress-text');
+
+            if (progressBar && progressText) {
+                progressBar.style.width = `${progressPercentage}%`;
+                progressText.textContent = `${progressPercentage}%`;
+            }
+        }
+
+        // Initialize progress bar
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(createProgressBar, 1000);
+
+            // Update progress on form changes
+            document.addEventListener('input', updateProgressBar);
+            document.addEventListener('change', updateProgressBar);
+        });
+
+        // Advanced form features
+        function initializeAdvancedFeatures() {
+            // Form auto-save indicator
+            createAutoSaveIndicator();
+
+            // Estimated completion time
+            showEstimatedTime();
+
+            // Form tips and guidance
+            addFormTips();
+        }
+
+        // Auto-save indicator
+        function createAutoSaveIndicator() {
+            const indicator = document.createElement('div');
+            indicator.id = 'autoSaveIndicator';
+            indicator.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: var(--najdi-green);
+        color: white;
+        padding: 8px 16px;
+        border-radius: 20px;
+        font-size: 12px;
+        opacity: 0;
+        transition: all 0.3s ease;
+        z-index: 1000;
+    `;
+            indicator.innerHTML = '<i class="fas fa-save"></i> تم الحفظ تلقائياً';
+
+            document.body.appendChild(indicator);
+        }
+
+        // Show auto-save indicator
+        function showAutoSaveIndicator() {
+            const indicator = document.getElementById('autoSaveIndicator');
+            if (indicator) {
+                indicator.style.opacity = '1';
+                setTimeout(() => {
+                    indicator.style.opacity = '0';
+                }, 2000);
+            }
+        }
+
+        // Enhanced auto-save with indicator
+        const originalAutoSaveForm = autoSaveForm;
+        autoSaveForm = function () {
+            originalAutoSaveForm();
+            showAutoSaveIndicator();
+        };
+
+        // Estimated completion time
+        function showEstimatedTime() {
+            const timeEstimate = document.createElement('div');
+            timeEstimate.className = 'time-estimate';
+            timeEstimate.innerHTML = `
+        <div class="time-estimate-content">
+            <i class="fas fa-clock"></i>
+            <span>وقت إكمال النموذج المقدر: 3-5 دقائق</span>
+        </div>
+    `;
+
+            timeEstimate.style.cssText = `
+        text-align: center;
+        padding: 16px;
+        background: rgba(207, 174, 112, 0.1);
+        border-radius: 12px;
+        margin-bottom: 24px;
+        color: var(--najdi-gold);
+        font-weight: 600;
+        font-size: 14px;
+    `;
+
+            const formSection = document.querySelector('.project-form-section');
+            const sectionTitle = formSection.querySelector('.section-title');
+            sectionTitle.parentNode.insertBefore(timeEstimate, sectionTitle.nextSibling);
+        }
+
+        // Form tips and guidance
+        function addFormTips() {
+            const tips = {
+                'project_name': 'اختر اسماً واضحاً ومعبراً عن مشروعك',
+                'project_description': 'كلما كان الوصف أكثر تفصيلاً، كان التقدير أدق',
+                'budget': 'الميزانية المرنة تساعد في تقديم أفضل حل ممكن',
+                'timeline': 'الجداول الزمنية المرنة تضمن جودة أعلى للعمل'
+            };
+
+            Object.keys(tips).forEach(fieldName => {
+                const field = document.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                    field.addEventListener('focus', function () {
+                        // تحقق إذا لم يكن هناك تلميح موجود مسبقًا
+                        if (!field.dataset.tipVisible) {
+                            showFormTip(this, tips[fieldName]);
+                            field.dataset.tipVisible = 'true'; // علامة أن التلميح ظاهر
+                        }
+                    });
+                }
+            });
+        }
+
+        // Show form tip
+        function showFormTip(field, tipText) {
+            hideFormTip(field); // Remove existing tip
+
+            const tip = document.createElement('div');
+            tip.className = 'form-tip';
+            tip.innerHTML = `
+        <i class="fas fa-lightbulb"></i>
+        <span>${tipText}</span>
+    `;
+            tip.style.cssText = `
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 12px;
+        background: rgba(207, 174, 112, 0.1);
+        color: var(--najdi-gold);
+        border-radius: 8px;
+        font-size: 13px;
+        animation: fadeInUp 0.3s ease;
+    `;
+
+            field.parentNode.appendChild(tip);
+        }
+
+        // Hide form tip
+        function hideFormTip(field) {
+            const existingTip = field.parentNode.querySelector('.form-tip');
+            if (existingTip) {
+                existingTip.style.animation = 'fadeOutDown 0.3s ease';
+                setTimeout(() => existingTip.remove(), 300);
+            }
+        }
+
+        // Form completion percentage tracking
+        function trackFormCompletion() {
+            const steps = [
+                {
+                    name: 'المعلومات الأساسية',
+                    fields: ['project_name', 'client_name', 'client_email', 'client_phone', 'project_description'],
+                    weight: 40
+                },
+                {
+                    name: 'المتطلبات التقنية',
+                    fields: ['features', 'target_platform', 'expected_users'],
+                    weight: 35
+                },
+                {
+                    name: 'الجدول الزمني والميزانية',
+                    fields: ['timeline', 'budget', 'priority'],
+                    weight: 25
+                }
+            ];
+
+            let totalCompletion = 0;
+
+            steps.forEach(step => {
+                const completedFields = step.fields.filter(fieldName => {
+                    const field = document.querySelector(`[name="${fieldName}"]`);
+                    if (!field) return false;
+
+                    if (field.type === 'checkbox') {
+                        return document.querySelector(`input[name="${fieldName}"]:checked`) !== null;
+                    }
+                    return field.value.trim() !== '';
+                });
+
+                const stepCompletion = (completedFields.length / step.fields.length) * step.weight;
+                totalCompletion += stepCompletion;
+            });
+
+            return Math.round(totalCompletion);
+        }
+
+        // Dynamic pricing calculator
+        function dynamicPricingCalculator() {
+            const costDisplay = document.createElement('div');
+            costDisplay.id = 'dynamicCostDisplay';
+            costDisplay.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: var(--najdi-green);
+        color: white;
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 8px 20px rgba(0, 108, 53, 0.3);
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(20px);
+        transition: all 0.3s ease;
+        min-width: 200px;
+        text-align: center;
+    `;
+
+            document.body.appendChild(costDisplay);
+
+            // Update cost on form changes
+            document.addEventListener('change', function () {
+                if (selectedProjectType && currentStep >= 2) {
+                    const costData = calculateProjectCost();
+                    costDisplay.innerHTML = `
+                <div style="font-size: 12px; opacity: 0.8; margin-bottom: 4px;">تقدير التكلفة</div>
+                <div style="font-size: 18px; font-weight: 700;">${costData.total.toLocaleString()} ريال</div>
+            `;
+                    costDisplay.style.opacity = '1';
+                    costDisplay.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initialize advanced features
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                initializeAdvancedFeatures();
+                dynamicPricingCalculator();
+            }, 1000);
+        });
+
+        // Form analytics and insights
+        function generateProjectInsights(projectData) {
+            const insights = {
+                complexity: calculateProjectComplexity(projectData),
+                recommendedTimeline: getRecommendedTimeline(projectData),
+                suggestedTechnologies: getSuggestedTechnologies(projectData),
+                estimatedTeamSize: getEstimatedTeamSize(projectData)
+            };
+
+            return insights;
+        }
+
+        // Calculate project complexity
+        function calculateProjectComplexity(projectData) {
+            let complexity = 1; // Base complexity
+
+            // Add complexity based on features
+            const complexFeatures = ['payment', 'chat', 'analytics', 'api-integration', 'multilingual'];
+            const selectedComplexFeatures = projectData.features?.filter(f => complexFeatures.includes(f)) || [];
+            complexity += selectedComplexFeatures.length * 0.3;
+
+            // Add complexity based on user scale
+            const userScale = projectData.users;
+            if (userScale === 'large') complexity += 0.5;
+            else if (userScale === 'enterprise') complexity += 1;
+
+            // Add complexity based on timeline pressure
+            if (projectData.timeline === 'asap') complexity += 0.8;
+            else if (projectData.timeline === '1-month') complexity += 0.4;
+
+            return Math.min(complexity, 5); // Cap at 5
+        }
+
+        // Get recommended timeline
+        function getRecommendedTimeline(projectData) {
+            const complexity = calculateProjectComplexity(projectData);
+
+            if (complexity <= 2) return '4-6 أسابيع';
+            else if (complexity <= 3) return '2-3 أشهر';
+            else if (complexity <= 4) return '3-4 أشهر';
+            else return '4-6 أشهر';
+        }
+
+        // Get suggested technologies
+        function getSuggestedTechnologies(projectData) {
+            const suggestions = {
+                'web-app': ['Node.js', 'React', 'MongoDB', 'Redis'],
+                'mobile-app': ['React Native', 'Firebase', 'Node.js'],
+                'api-system': ['FastAPI', 'PostgreSQL', 'Docker'],
+                'ecommerce': ['Node.js', 'MongoDB', 'Stripe', 'Redis'],
+                'custom': ['حسب المتطلبات'],
+                'consultation': ['تحليل شامل للمتطلبات']
+            };
+
+            return suggestions[projectData.type] || ['حسب التحليل التفصيلي'];
+        }
+
+        // Get estimated team size
+        function getEstimatedTeamSize(projectData) {
+            const complexity = calculateProjectComplexity(projectData);
+
+            if (complexity <= 2) return 'مطور واحد (أنا)';
+            else if (complexity <= 3) return 'مطور + مصمم';
+            else if (complexity <= 4) return 'فريق من 2-3 أشخاص';
+            else return 'فريق من 3-5 أشخاص';
+        }
+
+        // Enhanced success page with insights
+        function showProjectInsights(projectData) {
+            const insights = generateProjectInsights(projectData);
+            const successSection = document.getElementById('successSection');
+
+            const insightsHTML = `
+        <div class="project-insights">
+            <h3>تحليل مشروعك</h3>
+            <div class="insights-grid">
+                <div class="insight-item">
+                    <i class="fas fa-chart-line"></i>
+                    <strong>مستوى التعقيد:</strong>
+                    <span>${insights.complexity.toFixed(1)}/5</span>
+                </div>
+                <div class="insight-item">
+                    <i class="fas fa-calendar"></i>
+                    <strong>الجدول المقترح:</strong>
+                    <span>${insights.recommendedTimeline}</span>
+                </div>
+                <div class="insight-item">
+                    <i class="fas fa-users"></i>
+                    <strong>حجم الفريق:</strong>
+                    <span>${insights.estimatedTeamSize}</span>
+                </div>
+                <div class="insight-item">
+                    <i class="fas fa-code"></i>
+                    <strong>التقنيات المقترحة:</strong>
+                    <span>${insights.suggestedTechnologies.join(', ')}</span>
+                </div>
+            </div>
+        </div>
+    `;
+
+            // Add insights CSS
+            const insightsStyle = document.createElement('style');
+            insightsStyle.textContent = `
+        .project-insights {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 24px;
+            border-radius: 16px;
+            margin: 32px 0;
+            border: 1px solid rgba(0, 108, 53, 0.1);
+        }
+        .project-insights h3 {
+            color: var(--najdi-green);
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 20px;
+        }
+        .insights-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+        .insight-item {
+            text-align: center;
+            padding: 16px;
+            background: rgba(0, 108, 53, 0.05);
+            border-radius: 12px;
+        }
+        .insight-item i {
+            color: var(--najdi-gold);
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .insight-item strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--dark-black);
+        }
+        .insight-item span {
+            color: var(--najdi-green);
+            font-weight: 600;
+        }
+    `;
+            document.head.appendChild(insightsStyle);
+
+            // Insert insights into success section
+            const successMessage = successSection.querySelector('.success-message');
+            successMessage.insertAdjacentHTML('afterend', insightsHTML);
+        }
+
+        // Update the form submission to include insights
+        const originalHandleFormSubmit = handleFormSubmit;
+        handleFormSubmit = function (event) {
+            event.preventDefault();
+
+            if (!validateCurrentStep()) {
+                return;
+            }
+
+            const submitBtn = document.getElementById('submitBtn');
+            const formData = new FormData(event.target);
+
+            // Add project type to form data
+            formData.append('project_type', selectedProjectType);
+
+            // Show loading state
+            submitBtn.classList.add('loading');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> جاري الإرسال...';
+
+            // Collect all form data
+            const projectData = {
+                type: selectedProjectType,
+                name: formData.get('project_name'),
+                client: {
+                    name: formData.get('client_name'),
+                    email: formData.get('client_email'),
+                    phone: formData.get('client_phone'),
+                    company: formData.get('company')
+                },
+                description: formData.get('project_description'),
+                features: formData.getAll('features'),
+                platform: formData.get('target_platform'),
+                users: formData.get('expected_users'),
+                requirements: formData.get('additional_requirements'),
+                timeline: formData.get('timeline'),
+                budget: formData.get('budget'),
+                startDate: formData.get('preferred_start_date'),
+                priority: formData.get('priority'),
+                notes: formData.get('additional_notes'),
+                timestamp: new Date().toISOString(),
+                costEstimate: calculateProjectCost()
+            };
+
+            // Simulate API call
+            setTimeout(() => {
+                // Log project data
+                console.log('🚀 بيانات المشروع الجديد:', projectData);
+
+                // Hide form and show success
+                document.getElementById('projectFormSection').style.display = 'none';
+                document.getElementById('successSection').style.display = 'block';
+                document.getElementById('successSection').scrollIntoView({ behavior: 'smooth' });
+
+                // Add project insights
+                showProjectInsights(projectData);
+
+                // Reset button state
+                submitBtn.classList.remove('loading');
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-rocket"></i> إرسال طلب المشروع';
+
+                // Send welcome notification
+                sendWelcomeNotification(projectData);
+
+            }, 2000);
+        };
+
+        // Initialize all advanced features
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('🔧 تهيئة الميزات المتقدمة للنموذج...');
+            //setTimeout(initializeAdvancedFeatures, 1500);
+        });
+
+        // Console development info
+        console.log(`
+%c
+╔══════════════════════════════════════════════╗
+║     🛠️ نموذج بدء المشروع - الداهوم            
+║     📋 نموذج تفاعلي متقدم مع التحقق الذكي          -------
+║     💡 ميزات: حفظ تلقائي، تقدير تكلفة، نصائح          ---------
+║     🚀 جاهز للإنتاج مع تتبع التحليلات          
+╚══════════════════════════════════════════════╝
+`, 'color: #006C35; font-family: monospace; font-size: 12px;');
+
+        // Export functions for external use (if needed)
+        window.DahoomProjectForm = {
+            resetForm,
+            changeProjectType,
+            calculateProjectCost,
+            validateCurrentStep,
+            trackFormCompletion,
+            generateProjectInsights
+        };
+    </script>
+
+</body>
 </html>
