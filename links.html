@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>روابطي - الداهوم</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        :root {
+            --najdi-green: #006C35;
+            --light-green: #4CAF50;
+            --najdi-beige: #E5D4B7;
+            --dark-black: #121212;
+            --white: #FFFFFF;
+            --najdi-gold: #CFAE70;
+            --beta-red: #D32F2F;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-black);
+            background: linear-gradient(135deg, var(--najdi-beige) 0%, #f5f1e8 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Background Pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23006C35' fill-opacity='0.03'%3E%3Cpath d='M20 20l10-10v20l-10-10z'/%3E%3C/g%3E%3C/svg%3E") repeat;
+            z-index: -1;
+        }
+
+        a {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 90%;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 0.8s ease-out;
+        }
+
+        .profile-section {
+            margin-bottom: 32px;
+        }
+
+        .profile-image {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            background: linear-gradient(135deg, var(--najdi-green), var(--light-green));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.3);
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-8px);
+            }
+        }
+
+        .profile-image::before {
+            content: '🔗';
+            color: var(--white);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 500;
+        }
+
+        .profile-name {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--najdi-green);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .profile-name::after {
+            content: "{ }";
+            color: var(--najdi-gold);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+        }
+
+        .profile-title {
+            font-size: 18px;
+            color: var(--najdi-gold);
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .profile-bio {
+            font-size: 16px;
+            color: #666;
+            max-width: 400px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Links Grid */
+        .links-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .link-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 108, 53, 0.1);
+            border-radius: 16px;
+            padding: 20px 24px;
+            text-decoration: none;
+            color: var(--dark-black);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .link-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(207, 174, 112, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .link-card:hover::before {
+            left: 100%;
+        }
+
+        .link-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 108, 53, 0.2);
+            border-color: var(--najdi-green);
+        }
+
+        .link-icon {
+            font-size: 32px;
+            color: var(--najdi-green);
+            min-width: 50px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .link-card:hover .link-icon {
+            color: var(--najdi-gold);
+            transform: scale(1.1) rotateY(360deg);
+        }
+
+        .link-content {
+            flex: 1;
+        }
+
+        .link-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-black);
+            margin-bottom: 4px;
+        }
+
+        .link-description {
+            font-size: 14px;
+            color: #666;
+            opacity: 0.8;
+        }
+
+        .link-arrow {
+            font-size: 20px;
+            color: var(--najdi-green);
+            transition: transform 0.3s ease;
+        }
+
+        .link-card:hover .link-arrow {
+            transform: translateX(-8px);
+            color: var(--najdi-gold);
+        }
+
+        /* Categories */
+        .category {
+            margin-bottom: 32px;
+        }
+
+        .category-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--najdi-green);
+            margin-bottom: 16px;
+            text-align: center;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .category-title::before,
+        .category-title::after {
+            content: '';
+            flex: 1;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--najdi-gold), transparent);
+            max-width: 60px;
+        }
+
+        /* Social Section */
+        .social-section {
+            text-align: center;
+            padding: 32px 0;
+            border-top: 1px solid rgba(0, 108, 53, 0.1);
+        }
+
+        .social-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-black);
+            margin-bottom: 20px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .social-link {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            color: var(--najdi-green);
+            font-size: 24px;
+            border: 2px solid rgba(0, 108, 53, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-link::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: var(--najdi-green);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.4s ease;
+            z-index: -1;
+        }
+
+        .social-link:hover::before {
+            width: 100%;
+            height: 100%;
+        }
+
+        .social-link:hover {
+            color: var(--white);
+            transform: translateY(-4px) scale(1.1);
+            box-shadow: 0 10px 25px rgba(0, 108, 53, 0.3);
+            border-color: var(--najdi-green);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #666;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .beta {
+            color: var(--beta-red);
+            font-weight: 700;
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger animation for cards */
+        .link-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .link-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .link-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .link-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .link-card:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .link-card:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        .link-card:nth-child(7) {
+            animation-delay: 0.7s;
+        }
+
+        .link-card:nth-child(8) {
+            animation-delay: 0.8s;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 20px 0;
+            }
+
+            .profile-name {
+                font-size: 28px;
+            }
+
+            .profile-title {
+                font-size: 16px;
+            }
+
+            .link-card {
+                padding: 16px 20px;
+            }
+
+            .link-icon {
+                font-size: 28px;
+                min-width: 45px;
+            }
+
+            .link-title {
+                font-size: 16px;
+            }
+
+            .social-link {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+        }
+
+        /* Hover effect for the whole page */
+        .container:hover .link-card:not(:hover) {
+            opacity: 0.7;
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <div class="header">
+            <div class="profile-section">
+                <div class="profile-image"></div>
+                <h1 class="profile-name">الداهوم</h1>
+                <div class="profile-title">مبرمج واجهات خلفية</div>
+                <p class="profile-bio">
+                    انا سامي مهندس برمجيات و مطور أنظمة خلفية متخصص في التقنيات الحديثة. أجمع بين الخبرة التقنية
+                    والثقافة السعودية لخلق حلول رقمية مبتكرة.
+                </p>
+                <p class="profile-bio beta">جميع الأزرار والروبط الملونة باللون الأحمر في هي أزرار قيد التطوير</p>
+            </div>
+        </div>
+
+        <!-- Professional Links -->
+        <div class="category">
+            <h2 class="category-title">المهنية والأعمال</h2>
+            <div class="links-grid">
+                <a href="#" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title beta">السيرة الذاتية</div>
+                        <div class="link-description">تحميل السيرة الذاتية بصيغة PDF</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+
+                <a href="Exhibition.html" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-briefcase"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">معرض الأعمال</div>
+                        <div class="link-description">مشاريعي وأعمالي التقنية</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+
+                <a href="#" class="link-card">
+                    <div class="link-icon">
+                        <i class="fab fa-linkedin"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title beta">LinkedIn</div>
+                        <div class="link-description">ملفي المهني على لينكد إن</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Development Links -->
+        <div class="category">
+            <h2 class="category-title">البرمجة والتطوير</h2>
+            <div class="links-grid">
+                <a href="https://github.com/hi-vx3" class="link-card">
+                    <div class="link-icon">
+                        <i class="fab fa-github"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">GitHub</div>
+                        <div class="link-description">مشاريعي مفتوحة المصدر</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+
+                <a href="#" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title beta">CodePen</div>
+                        <div class="link-description">تجاربي وأكوادي التفاعلية</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Contact Links -->
+        <div class="category">
+            <h2 class="category-title">التواصل</h2>
+            <div class="links-grid">
+                <a href="Contact.html" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">صفحة التواصل</div>
+                        <div class="link-description">صفحة التواصل</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+                <a href="mailto:progsami@proton.me" class="link-card">
+                    <div class="link-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="link-content">
+                        <div class="link-title">البريد الإلكتروني</div>
+                        <div class="link-description">progsami@proton.me</div>
+                    </div>
+                    <div class="link-arrow">
+                        <i class="fas fa-arrow-left"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Social Media -->
+        <div class="social-section">
+            <h3 class="social-title">تابعني على</h3>
+            <div class="social-links">
+                <a href="https://www.instagram.com/hi_vx3/" class="social-link" title="انستجرام">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="https://www.tiktok.com/@hi_vx3" class="social-link" title="تيك توك">
+                    <i class="fab fa-tiktok"></i>
+                </a>
+                <a href="http://discord.com/users/708070985412247644" class="social-link" title="ديسكورد">
+                    <i class="fab fa-discord"></i>
+                </a>
+                <a href="https://x.com/hi_vx3" class="social-link" title="Twitter">
+                    <i class="fab fa-twitter"></i>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            {"location": "🇸🇦", "year": "2025" }
+        </div>
+    </div>
+
+    <script>
+        // Smooth entrance animations
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = document.querySelectorAll('.link-card');
+
+            // Intersection Observer for cards
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        setTimeout(() => {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }, index * 100);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            cards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'all 0.6s ease';
+                observer.observe(card);
+            });
+        });
+
+        // Click tracking (for analytics)
+        document.querySelectorAll('.link-card').forEach(card => {
+            card.addEventListener('click', (e) => {
+                const linkTitle = card.querySelector('.link-title').textContent;
+                console.log(`تم النقر على: ${linkTitle}`);
+
+                // Add click effect
+                card.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    card.style.transform = '';
+                }, 150);
+            });
+        });
+
+        // Easter egg - typing effect on bio
+        const bio = document.querySelector('.profile-bio');
+        const originalText = bio.textContent;
+
+        function typeWriter(text, element, speed = 50) {
+            element.textContent = '';
+            let i = 0;
+
+            function type() {
+                if (i < text.length) {
+                    element.textContent += text.charAt(i);
+                    i++;
+                    setTimeout(type, speed);
+                }
+            }
+            type();
+        }
+
+        // Start typing effect after page load
+        setTimeout(() => {
+            typeWriter(originalText, bio, 30);
+        }, 1000);
+
+        // Console welcome message
+        console.log(`
+        %c
+        ╔════════════════════════════════════╗
+        ║      🔗 صفحة روابط الداهوم         ║
+        ║      👨‍💻 جميع روابطي في مكان واحد  ║
+        ║      🌐 dahoum-links.com          ║
+        ╚════════════════════════════════════╝
+        `, 'color: #006C35; font-family: monospace; font-size: 12px;');
+
+        // Floating particles effect
+        function createParticle() {
+            const colors = ['var(--najdi-green)', 'var(--najdi-gold)', 'var(--light-green)'];
+            const particle = document.createElement('div');
+
+            particle.style.cssText = `
+                position: fixed;
+                width: 6px;
+                height: 6px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                border-radius: 50%;
+                opacity: 0.4;
+                pointer-events: none;
+                z-index: -1;
+                left: ${Math.random() * window.innerWidth}px;
+                top: ${window.innerHeight + 10}px;
+                animation: floatUp 8s linear infinite;
+            `;
+
+            document.body.appendChild(particle);
+
+            setTimeout(() => {
+                particle.remove();
+            }, 8000);
+        }
+
+        // Add floating animation CSS
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes floatUp {
+                0% {
+                    transform: translateY(0px) rotate(0deg);
+                    opacity: 0.4;
+                }
+                100% {
+                    transform: translateY(-100vh) rotate(720deg);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Create particles every 4 seconds
+        setInterval(createParticle, 4000);
+    </script>
+</body>
+
+</html>
